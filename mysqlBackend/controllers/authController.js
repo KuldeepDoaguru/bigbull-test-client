@@ -48,7 +48,6 @@ const registerController = async (req, res) => {
       state,
       address,
       dob,
-      refferelCode,
     ];
     if (requiredFields.some((field) => !field)) {
       return res.status(400).json({ error: "All fields are required" });
@@ -136,7 +135,7 @@ const loginController = async (req, res) => {
 
     // Validation
     if (!email || !password) {
-      return res.status(404).send({
+      return res.status(400).send({
         success: false,
         message: "Invalid email or password",
       });
@@ -166,7 +165,7 @@ const loginController = async (req, res) => {
       // Compare passwords
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        return res.status(200).send({
+        return res.status(401).send({
           success: false,
           message: "Invalid Password",
         });

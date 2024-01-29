@@ -51,7 +51,7 @@ const Login = () => {
       localStorage.setItem("userData", JSON.stringify(userData));
       dispatch(setUser(userData));
       cogoToast.success("Login Successfull");
-      navigate("/edit-profile");
+      // navigate("/edit-profile");
     } catch (error) {
       console.log(error);
       cogoToast.error("error:", error);
