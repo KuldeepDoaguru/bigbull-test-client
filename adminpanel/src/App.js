@@ -29,6 +29,8 @@ import ForgotPassword from "./pages/ForgotPassword";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./redux/slices/UserSlices";
 import AddChapter from "./components/Course/Manage_Course_Video/AddChapter";
+import ShowChapter from "./components/Course/Manage_Course_Video/ShowChapter";
+import EditCourseChapter from "./components/Course/Manage_Course_Video/EditCourseChapter";
 
 function App() {
   const storedUserData = localStorage.getItem("userData");
@@ -52,10 +54,12 @@ function App() {
         <Route path="manageusers" element={<Manageusers />} />
         <Route path="/editcourse/:cid" element={<EditCourse />} />
         <Route path="/addChapters/:cid" element={<AddChapter />} />
+        <Route path="/showchapter/:cid" element={<ShowChapter />} />
         <Route path="/showvideos/:cid" element={<ShowVideos />} />
         <Route path="/addvideo/:cid" element={<Addvideo />} />
         <Route path="/kycstatus" element={<Pendingkyc />} />
         <Route path="/editvideo/:cid/:vid" element={<EditCourseVideo />} />
+        <Route path="/editchapter/:cid/:chid" element={<EditCourseChapter />} />
         <Route path="/webinars" element={<Webinar />} />
         <Route path="/training" element={<Training />} />
         <Route path="/offer" element={<Offer />} />

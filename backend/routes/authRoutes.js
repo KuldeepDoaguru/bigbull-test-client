@@ -77,4 +77,5 @@ router.get("/profilePictureView/:userId", profilePictureView);
 router.get("/contactInquiry", contactInquiry);
 router.get("/getBoughtCourseDetails", getBoughtCourseDetails);
 
+
 module.exports = router;

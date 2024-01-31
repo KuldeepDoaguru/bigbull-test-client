@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../Navbar";
 import ManageNav from "./ManageNav";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ShowVideos = () => {
   const { cid } = useParams();
+  const navigate = useNavigate();
   const [selectedCourse, setSelectedCourse] = useState([]);
   const [keyword, setKeyword] = useState("");
 
   const displayCourseVideo = async () => {
     try {
       const response = await axios.get(
-        `https://bigbulls.co.in/api/v1/auth/videoListViaCourseId/${cid}`
+        `http://localhost:6060/api/v1/auth/videoListViaCourseId/${cid}`
       );
-      setSelectedCourse(response.data);
-      console.log(response.data);
+      setSelectedCourse(response.data.result);
+      console.log(response.data.result);
     } catch (error) {
       console.log(error);
     }
@@ -27,15 +28,29 @@ const ShowVideos = () => {
     displayCourseVideo();
   }, [cid]);
 
+  const deleteVideoViaID = async (vid) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:6060/api/v1/auth/deleteVideoViaVid/${vid}`
+      );
+      console.log(response);
+      toast.success("Video delete successfully");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="recentpurchases-outer">
         <Navbar />
         <ManageNav
           editcourse={false}
+          addvideo={false}
           showvideos={true}
-          addvideos={false}
           courseid={cid}
+          addChapter={false}
         />
         <div className="head-main"> Update Course Videos </div>
 
@@ -67,26 +82,30 @@ const ShowVideos = () => {
             <p style={{ width: "20%" }}>Video</p>
             <p style={{ width: "20%" }}>Video Title</p>
             <p style={{ width: "25%" }}>Description</p>
-            <p style={{ width: "15%" }}>Category</p>
+            <p style={{ width: "15%" }}>Chapter ID</p>
             <p style={{ width: "15%" }}>Edit</p>
+            <p style={{ width: "15%" }}>Delete</p>
           </div>
           <div className="table-body">
             {selectedCourse.map((video, index) => (
-              <div className="table-row" key={video._id}>
+              <div className="table-row" key={video.coursevideo_id}>
                 <p style={{ width: "5%" }}>{index + 1}</p>
                 <video controls width="150">
-                  <source
-                    src={`https://bigbulls.co.in/${video.url}`}
-                    type="video/mp4"
-                  />
+                  <source src={video.video_url} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
                 <p style={{ width: "20%" }}>{video.title}</p>
                 <p style={{ width: "25%" }}>{video.description}</p>
-                <p style={{ width: "15%" }}>{video.category}</p>
-                <Link to={`/editvideo/${cid}/${video._id}`}>
+                <p style={{ width: "15%" }}>{video.chapter_id}</p>
+                <Link to={`/editvideo/${cid}/${video.coursevideo_id}`}>
                   <button style={{ width: "100%" }}>Edit</button>
                 </Link>
+                <button
+                  style={{ width: "15%" }}
+                  onClick={() => deleteVideoViaID(video.coursevideo_id)}
+                >
+                  Delete
+                </button>
               </div>
             ))}
           </div>
