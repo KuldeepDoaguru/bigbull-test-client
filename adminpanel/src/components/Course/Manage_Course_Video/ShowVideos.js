@@ -15,7 +15,7 @@ const ShowVideos = () => {
   const displayCourseVideo = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:6060/api/v1/auth/videoListViaCourseId/${cid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/videoListViaCourseId/${cid}`
       );
       setSelectedCourse(response.data.result);
       console.log(response.data.result);
@@ -31,7 +31,7 @@ const ShowVideos = () => {
   const deleteVideoViaID = async (vid) => {
     try {
       const response = await axios.delete(
-        `http://localhost:6060/api/v1/auth/deleteVideoViaVid/${vid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/deleteVideoViaVid/${vid}`
       );
       console.log(response);
       toast.success("Video delete successfully");
@@ -40,6 +40,8 @@ const ShowVideos = () => {
       console.log(error);
     }
   };
+
+  console.log(selectedCourse);
 
   return (
     <>
@@ -87,27 +89,38 @@ const ShowVideos = () => {
             <p style={{ width: "15%" }}>Delete</p>
           </div>
           <div className="table-body">
-            {selectedCourse.map((video, index) => (
-              <div className="table-row" key={video.coursevideo_id}>
-                <p style={{ width: "5%" }}>{index + 1}</p>
-                <video controls width="150">
-                  <source src={video.video_url} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                <p style={{ width: "20%" }}>{video.title}</p>
-                <p style={{ width: "25%" }}>{video.description}</p>
-                <p style={{ width: "15%" }}>{video.chapter_id}</p>
-                <Link to={`/editvideo/${cid}/${video.coursevideo_id}`}>
-                  <button style={{ width: "100%" }}>Edit</button>
-                </Link>
-                <button
-                  style={{ width: "15%" }}
-                  onClick={() => deleteVideoViaID(video.coursevideo_id)}
-                >
-                  Delete
-                </button>
-              </div>
-            ))}
+            {selectedCourse
+              .filter((val) => {
+                if (keyword === "") {
+                  return true;
+                } else if (
+                  val.title.toLowerCase().includes(keyword) ||
+                  val.title.toLowerCase().includes(keyword)
+                ) {
+                  return val;
+                }
+              })
+              .map((video, index) => (
+                <div className="table-row" key={video.coursevideo_id}>
+                  <p style={{ width: "5%" }}>{index + 1}</p>
+                  <video controls width="150">
+                    <source src={video.video_url} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <p style={{ width: "20%" }}>{video.title}</p>
+                  <p style={{ width: "25%" }}>{video.description}</p>
+                  <p style={{ width: "15%" }}>{video.chapter_id}</p>
+                  <Link to={`/editvideo/${cid}/${video.coursevideo_id}`}>
+                    <button style={{ width: "100%" }}>Edit</button>
+                  </Link>
+                  <button
+                    style={{ width: "15%" }}
+                    onClick={() => deleteVideoViaID(video.coursevideo_id)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
           </div>
         </div>
       </div>

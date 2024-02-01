@@ -14,7 +14,7 @@ const Leaderboard = () => {
   const getLeaderBoardDetails = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:6060/api/v1/auth/LeaderBoardData"
+        "https://admin.bigbulls.co.in/api/v1/auth/LeaderBoardData"
       );
       console.log(response.data.result);
       setUsersLeader(response.data.result);
@@ -26,7 +26,7 @@ const Leaderboard = () => {
   const getAllUsers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:6060/api/v1/auth/usersList"
+        "https://admin.bigbulls.co.in/api/v1/auth/usersList"
       );
       console.log(response.data);
       setAllUser(response.data);
@@ -77,7 +77,7 @@ const Leaderboard = () => {
             />
           </svg>
           <input
-            placeholder="Search by username or coursename or date"
+            placeholder="Search by username or user email"
             value={keyword}
             onChange={(e) => setkeyword(e.target.value.toLowerCase())}
           />
@@ -91,6 +91,16 @@ const Leaderboard = () => {
           </div>
           <div className="table-body">
             {allUser
+              .filter((val) => {
+                if (keyword === "") {
+                  return true;
+                } else if (
+                  val.name.toLowerCase().includes(keyword) ||
+                  val.name.toLowerCase().includes(keyword)
+                ) {
+                  return val;
+                }
+              })
               .map((e, i) => {
                 // Filter userLeader for the current user and calculate total amount
                 const totalAmount = userLeader

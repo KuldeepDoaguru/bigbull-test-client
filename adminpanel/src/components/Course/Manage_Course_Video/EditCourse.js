@@ -21,7 +21,7 @@ const EditCourse = () => {
   const getCourseViaID = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:6060/api/v1/auth/coursePage/${cid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/coursePage/${cid}`
       );
 
       setData(response.data);
@@ -53,7 +53,7 @@ const EditCourse = () => {
   //   console.log(cid);
   //   try {
   //     const res = await axios.get(
-  //       `http://localhost:6060/api/v1/auth/coursePage/${cid}`
+  //       `https://admin.bigbulls.co.in/api/v1/auth/coursePage/${cid}`
   //     );
   //     console.log(res.data);
   //     setcourseimg(res.data);
@@ -71,7 +71,7 @@ const EditCourse = () => {
     e.preventDefault();
     try {
       const res = await axios.put(
-        `http://localhost:6060/api/v1/auth/editCourse/${cid}`,
+        `https://admin.bigbulls.co.in/api/v1/auth/editCourse/${cid}`,
         courseformdata,
         {
           headers: {
@@ -82,7 +82,7 @@ const EditCourse = () => {
       console.log(res.data);
       toast.success(res.data.message);
       //   navigate("/managecourses");
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.log(error);
     }
@@ -91,7 +91,7 @@ const EditCourse = () => {
   const deleteCourse = async () => {
     try {
       const res = await axios.delete(
-        `http://localhost:6060/api/v1/auth/deleteCourse/${cid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/deleteCourse/${cid}`
       );
       console.log(res);
       navigate("/managecourses");
@@ -153,6 +153,17 @@ const EditCourse = () => {
                     value={course_price}
                     placeholder={data[0]?.price}
                     type="number"
+                  />
+                </div>
+                <div>
+                  <label>Course Category</label>
+                  <input
+                    onChange={(e) => {
+                      setCourseCategory(e.target.value);
+                    }}
+                    value={courseCategory}
+                    placeholder={data[0]?.price}
+                    type="text"
                   />
                 </div>
               </div>

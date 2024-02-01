@@ -80,7 +80,7 @@ const EditUserpage = () => {
   const getUserViaId = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:6060/api/v1/auth/getUserViaId/${uid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/getUserViaId/${uid}`
       );
       console.log(response.data);
       setUserData(response.data[0]);
@@ -107,7 +107,7 @@ const EditUserpage = () => {
         console.log(modifiedDate);
 
         const response = await axios.put(
-          `http://localhost:6060/api/v1/auth/users/${uid}`,
+          `https://admin.bigbulls.co.in/api/v1/auth/users/${uid}`,
           {
             ...data,
             dob: modifiedDate.toISOString().split("T")[0],
@@ -121,7 +121,7 @@ const EditUserpage = () => {
         console.log(response.data);
       } else {
         const response = await axios.put(
-          `http://localhost:6060/api/v1/auth/users/${uid}`,
+          `https://admin.bigbulls.co.in/api/v1/auth/users/${uid}`,
           data
         );
         if (response.data.success) {

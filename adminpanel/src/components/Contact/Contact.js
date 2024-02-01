@@ -12,7 +12,7 @@ const Contact = () => {
   const getContact = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:6060/api/v1/auth/contactInquiry"
+        "https://admin.bigbulls.co.in/api/v1/auth/contactInquiry"
       );
       console.log(response.data.result);
       setcontactus(response.data.result);

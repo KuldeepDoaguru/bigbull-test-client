@@ -26,7 +26,7 @@ const Addcourse = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:6060/api/v1/auth/add-course",
+        "https://admin.bigbulls.co.in/api/v1/auth/add-course",
         formdata
       );
       console.log(response.data);

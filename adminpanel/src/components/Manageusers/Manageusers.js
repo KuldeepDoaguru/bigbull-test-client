@@ -15,7 +15,7 @@ const Manageusers = () => {
   const getUsers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:6060/api/v1/auth/usersList"
+        "https://admin.bigbulls.co.in/api/v1/auth/usersList"
       );
       console.log(response.data);
       setuserDeatils(response.data);
@@ -42,7 +42,7 @@ const Manageusers = () => {
   const deleteUser = async (id) => {
     try {
       const response = await axios.delete(
-        `http://localhost:6060/api/v1/auth/deleteUser/${id}`
+        `https://admin.bigbulls.co.in/api/v1/auth/deleteUser/${id}`
       );
       console.log(response);
       window.location.reload();
@@ -50,6 +50,8 @@ const Manageusers = () => {
       console.log(error);
     }
   };
+
+  console.log(userdetails);
   return (
     <>
       <div className="recentpurchases-outer">
@@ -71,7 +73,7 @@ const Manageusers = () => {
             />
           </svg>
           <input
-            placeholder="Search any course by title or creator name"
+            placeholder="Search any course by title or user name"
             value={keyword}
             onChange={(e) => setkeyword(e.target.value.toLowerCase())}
             type="text"
@@ -84,7 +86,7 @@ const Manageusers = () => {
           </button>
         </div>
 
-        <div>
+        {/* <div>
           {showResults && (
             <div className="searchDiv">
               <h2>Search Results:</h2>
@@ -95,29 +97,60 @@ const Manageusers = () => {
               </ul>
             </div>
           )}
-        </div>
+        </div> */}
         <div className="table">
           <div className="table-head">
-            <p className="table-sno">Sno.</p>
-            <p className="table-small">Name</p>
-            <p className="table-email">Email</p>
-            <p className="table-small">Gender</p>
-            <p className="table-small">Phone</p>
+            <p className="table-sno" style={{ width: "10%" }}>
+              Sno.
+            </p>
+            <p className="table-small" style={{ width: "15%" }}>
+              Name
+            </p>
+            <p className="table-smail" style={{ width: "35%" }}>
+              Email
+            </p>
+            <p className="table-small text-center" style={{ width: "15%" }}>
+              Gender
+            </p>
+            <p className="table-small" style={{ width: "15%" }}>
+              Phone
+            </p>
             <p className="table-btn">Delete</p>
             <p className="table-btn">Edit</p>
           </div>
           <div className="table-body">
-            {(showResults.length > 0 ? showResults : userdetails).map(
-              (e, i) => {
+            {userdetails
+              .filter((val) => {
+                if (keyword === "") {
+                  return true;
+                } else if (
+                  val.name.toLowerCase().includes(keyword) ||
+                  val.name.toLowerCase().includes(keyword)
+                ) {
+                  return val;
+                }
+              })
+              .map((e, i) => {
                 return (
-                  <div className="table-row" key={e._id}>
-                    <p className="table-sno">{i + 1}</p>
-                    <p className="table-small">{e.name}</p>
-                    <p className="table-email" style={{ width: "25%" }}>
+                  <div className="table-row" key={e.id}>
+                    <p className="table-sno" style={{ width: "10%" }}>
+                      {i + 1}
+                    </p>
+                    <p className="table-small" style={{ width: "15%" }}>
+                      {e.name}
+                    </p>
+                    <p className="table-smail" style={{ width: "35%" }}>
                       {e.email}
                     </p>
-                    <p className="table-small">{e.gender}</p>
-                    <p className="table-small">{e.phone}</p>
+                    <p
+                      className="table-small text-center"
+                      style={{ width: "15%" }}
+                    >
+                      {e.gender}
+                    </p>
+                    <p className="table-small" style={{ width: "15%" }}>
+                      {e.phone}
+                    </p>
                     <p
                       className="table-btn"
                       style={{ color: "black" }}
@@ -133,8 +166,7 @@ const Manageusers = () => {
                     </Link>
                   </div>
                 );
-              }
-            )}
+              })}
           </div>
         </div>
       </div>

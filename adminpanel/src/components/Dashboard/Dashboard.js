@@ -23,7 +23,7 @@ const Dashboard = () => {
   const getRegStudent = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:6060/api/v1/auth/usersList"
+        "https://admin.bigbulls.co.in/api/v1/auth/usersList"
       );
       console.log(response.data);
       setUsers(response.data);
@@ -35,7 +35,7 @@ const Dashboard = () => {
   const getBoughtCourseData = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:6060/api/v1/auth/getBoughtCourseDetails"
+        "https://admin.bigbulls.co.in/api/v1/auth/getBoughtCourseDetails"
       );
       console.log(response.data.result);
       setData(response.data.result);
@@ -216,6 +216,8 @@ const Dashboard = () => {
 
     calculateUserCount();
   }, [usertilltime, data]);
+
+  console.log(users);
 
   return (
     <>

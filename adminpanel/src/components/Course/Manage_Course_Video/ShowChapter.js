@@ -16,7 +16,7 @@ const ShowChapter = () => {
   const chapterIDList = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:6060/api/v1/auth/getChapterViaId/${cid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/getChapterViaId/${cid}`
       );
       console.log(response.data.result);
       setChapterList(response.data.result);
@@ -31,7 +31,7 @@ const ShowChapter = () => {
     console.log(chid);
     try {
       const response = await axios.delete(
-        `http://localhost:6060/api/v1/auth/deleteChapterDataViaChid/${chid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/deleteChapterDataViaChid/${chid}`
       );
       console.log(response);
       cogoToast.success("chapter deleted successfully");
@@ -100,24 +100,35 @@ const ShowChapter = () => {
             </p>
           </div>
           <div className="table-body">
-            {chapterList.map((video, index) => (
-              <div className="table-row" key={video.ch_id}>
-                <p style={{ width: "5%" }}>{video.ch_id}</p>
+            {chapterList
+              .filter((val) => {
+                if (keyword === "") {
+                  return true;
+                } else if (
+                  val.ch_name.toLowerCase().includes(keyword) ||
+                  val.ch_name.toLowerCase().includes(keyword)
+                ) {
+                  return val;
+                }
+              })
+              .map((video, index) => (
+                <div className="table-row" key={video.ch_id}>
+                  <p style={{ width: "5%" }}>{video.ch_id}</p>
 
-                <p style={{ width: "25%" }}>{video.ch_name}</p>
-                <p style={{ width: "40%" }}>{video.question_sheet}</p>
-                {/* <p style={{ width: "15%" }}>{video.chapter_id}</p> */}
-                <Link to={`/editchapter/${cid}/${video.ch_id}`}>
-                  <button style={{ width: "100%" }}>Edit</button>
-                </Link>
-                <button
-                  onClick={() => deleteChapter(video.ch_id)}
-                  style={{ width: "15%" }}
-                >
-                  Delete
-                </button>
-              </div>
-            ))}
+                  <p style={{ width: "25%" }}>{video.ch_name}</p>
+                  <p style={{ width: "40%" }}>{video.question_sheet}</p>
+                  {/* <p style={{ width: "15%" }}>{video.chapter_id}</p> */}
+                  <Link to={`/editchapter/${cid}/${video.ch_id}`}>
+                    <button style={{ width: "100%" }}>Edit</button>
+                  </Link>
+                  <button
+                    onClick={() => deleteChapter(video.ch_id)}
+                    style={{ width: "15%" }}
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
           </div>
         </div>
       </div>

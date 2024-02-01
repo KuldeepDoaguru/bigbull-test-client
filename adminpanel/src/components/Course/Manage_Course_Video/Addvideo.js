@@ -29,7 +29,7 @@ const Addvideo = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:6060/api/v1/auth/courses/${cid}/videos`,
+        `https://admin.bigbulls.co.in/api/v1/auth/courses/${cid}/videos`,
         addvideoformdata
       );
 
@@ -45,7 +45,7 @@ const Addvideo = () => {
   const chapterIDList = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:6060/api/v1/auth/getChapterViaId/${cid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/getChapterViaId/${cid}`
       );
       console.log(response.data.result);
       setChapterList(response.data.result);
@@ -82,6 +82,7 @@ const Addvideo = () => {
                     setvideotitle(e.target.value);
                   }}
                   placeholder="Enter Video Title"
+                  required
                 />
               </div>
 
@@ -93,6 +94,7 @@ const Addvideo = () => {
                     setvideoDuration(e.target.value);
                   }}
                   placeholder="Enter Video Duration"
+                  required
                 />
               </div>
             </div>
@@ -102,6 +104,7 @@ const Addvideo = () => {
                 <label>Chapter ID</label>
                 <select
                   name="chapterID"
+                  required
                   onChange={(e) => {
                     setChapterID(e.target.value);
                   }}
@@ -121,7 +124,9 @@ const Addvideo = () => {
                 </label>
                 <input
                   type="file"
-                  name="videoFile" // Corrected from filename
+                  name="videoFile"
+                  disabled={!chapterID ? true : false}
+                  required
                   onChange={(e) => {
                     setcoursevideo(e.target.files[0]);
                   }}
@@ -135,6 +140,7 @@ const Addvideo = () => {
               <label>Video Description</label>
               <textarea
                 name="video_description"
+                required
                 onChange={(e) => {
                   setvideodescription(e.target.value);
                 }}

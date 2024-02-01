@@ -25,7 +25,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:6060/api/v1/auth/sendOtp",
+        "https://admin.bigbulls.co.in/api/v1/auth/sendOtp",
         {
           email,
         }
@@ -41,7 +41,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:6060/api/v1/auth/verifyOtp",
+        "https://admin.bigbulls.co.in/api/v1/auth/verifyOtp",
         {
           email,
           otp,
@@ -59,7 +59,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        "http://localhost:6060/api/v1/auth/updateAdminPassword",
+        "https://admin.bigbulls.co.in/api/v1/auth/updateAdminPassword",
         {
           email,
           password,

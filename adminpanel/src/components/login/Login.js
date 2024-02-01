@@ -24,7 +24,7 @@ const Login = () => {
   const sendOtp = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:6060/api/v1/auth/sendOtp",
+        "https://admin.bigbulls.co.in/api/v1/auth/sendOtp",
         {
           email,
         }
@@ -39,7 +39,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:6060/api/v1/auth/adminLoginUser",
+        "https://admin.bigbulls.co.in/api/v1/auth/adminLoginUser",
         {
           email,
           password,
@@ -74,7 +74,7 @@ const Login = () => {
       e.preventDefault();
       try {
         const response = await axios.post(
-          "http://localhost:6060/api/v1/auth/verifyOtp",
+          "https://admin.bigbulls.co.in/api/v1/auth/verifyOtp",
           {
             email,
             otp,
@@ -92,6 +92,7 @@ const Login = () => {
         setVerification(true);
       } catch (error) {
         console.log(error);
+        cogoToast.error("Wrong OTP!");
       }
     };
 

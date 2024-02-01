@@ -164,7 +164,7 @@ const Navbar = () => {
               </button>
             )}
           </Link>
-          <Link to="/payments" style={{ textDecoration: "none" }}>
+          {/* <Link to="/payments" style={{ textDecoration: "none" }}>
             {location.pathname === "/payments" ? (
               <button className="iconbtn-active">
                 <svg
@@ -199,7 +199,7 @@ const Navbar = () => {
                 <p className={"notification-circle"}></p>
               </button>
             )}
-          </Link>
+          </Link> */}
         </div>
 
         <div className="right">

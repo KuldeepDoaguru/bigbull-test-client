@@ -25,7 +25,7 @@ const EditCourseChapter = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:6060/api/v1/auth/updateChapterDataViaChid/${cid}/${chid}`,
+        `https://admin.bigbulls.co.in/api/v1/auth/updateChapterDataViaChid/${cid}/${chid}`,
         formdata
       );
       console.log(response);
@@ -39,7 +39,7 @@ const EditCourseChapter = () => {
   const deleteChapter = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:6060/api/v1/auth/deleteChapterDataViaChid/${chid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/deleteChapterDataViaChid/${chid}`
       );
       console.log(response);
       cogoToast.success("chapter deleted successfully");
@@ -53,7 +53,7 @@ const EditCourseChapter = () => {
   const getChapterViaChid = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:6060/api/v1/auth/getChapterDataViaChid/${chid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/getChapterDataViaChid/${chid}`
       );
       console.log(response.data.result);
       setChapterList(response.data.result);

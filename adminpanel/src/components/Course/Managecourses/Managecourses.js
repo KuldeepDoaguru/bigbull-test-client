@@ -18,7 +18,7 @@ const Managecourses = () => {
   const getCourse = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:6060/api/v1/auth/getAllCourses"
+        "https://admin.bigbulls.co.in/api/v1/auth/getAllCourses"
       );
       console.log(res.data.result);
       setallCourses(res.data.result);
@@ -34,7 +34,7 @@ const Managecourses = () => {
   const deleteCourse = async (id) => {
     try {
       const res = await axios.delete(
-        `http://localhost:6060/api/v1/auth/deleteCourse/${id}`
+        `https://admin.bigbulls.co.in/api/v1/auth/deleteCourse/${id}`
       );
       console.log(res);
       window.location.reload();
@@ -54,6 +54,8 @@ const Managecourses = () => {
 
   console.log(showResults);
   console.log(searchResults);
+
+  console.log(allCourses);
 
   return (
     <>
@@ -77,7 +79,7 @@ const Managecourses = () => {
               />
             </svg>
             <input
-              placeholder="Search any course by title or creator name"
+              placeholder="Search any course by course name"
               value={keyword}
               onChange={(e) => setkeyword(e.target.value.toLowerCase())}
               type="text"
@@ -119,35 +121,46 @@ const Managecourses = () => {
               <p className="table-btn">Edit</p>
             </div>
             <div className="table-body">
-              {allCourses?.map((item, index) => (
-                <>
-                  <div className="table-row" key={index}>
-                    <p className="table-small">
-                      <Link to={`/course-details/${item.course_id}`}>
-                        <span>
-                          <FaExternalLinkAlt />
-                        </span>
-                        {item.course_name}
+              {allCourses
+                ?.filter((val) => {
+                  if (keyword === "") {
+                    return true;
+                  } else if (
+                    val.course_name.toLowerCase().includes(keyword) ||
+                    val.course_name.toLowerCase().includes(keyword)
+                  ) {
+                    return val;
+                  }
+                })
+                .map((item, index) => (
+                  <>
+                    <div className="table-row" key={index}>
+                      <p className="table-small">
+                        <Link to={`/course-details/${item.course_id}`}>
+                          <span>
+                            <FaExternalLinkAlt />
+                          </span>
+                          {item.course_name}
+                        </Link>
+                      </p>
+                      <p className="table-small">{item.category}</p>
+                      <p className="table-email">{item.price}</p>
+                      <p
+                        className="table-btn"
+                        style={{ color: "black" }}
+                        onClick={() => deleteCourse(item.course_id)}
+                      >
+                        Delete
+                      </p>
+                      <Link
+                        to={`/editcourse/${item.course_id}`}
+                        style={{ textDecoration: "none" }}
+                      >
+                        <p className="table-btn">Edit</p>
                       </Link>
-                    </p>
-                    <p className="table-small">{item.category}</p>
-                    <p className="table-email">{item.price}</p>
-                    <p
-                      className="table-btn"
-                      style={{ color: "black" }}
-                      onClick={() => deleteCourse(item.course_id)}
-                    >
-                      Delete
-                    </p>
-                    <Link
-                      to={`/editcourse/${item.course_id}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <p className="table-btn">Edit</p>
-                    </Link>
-                  </div>
-                </>
-              ))}
+                    </div>
+                  </>
+                ))}
             </div>
           </div>
         </div>

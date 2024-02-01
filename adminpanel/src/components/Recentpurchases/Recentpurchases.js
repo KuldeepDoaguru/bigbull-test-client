@@ -10,7 +10,7 @@ const Recentpurchases = () => {
   const getBoughtCourseData = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:6060/api/v1/auth/getBoughtCourseDetails"
+        "https://admin.bigbulls.co.in/api/v1/auth/getBoughtCourseDetails"
       );
       console.log(response.data.result);
       setData(response.data.result);
@@ -65,10 +65,10 @@ const Recentpurchases = () => {
           {data
             .filter((val) => {
               if (keyword === "") {
-                return val;
+                return true;
               } else if (
-                val.client_name.toLowerCase().includes(keyword) ||
-                val.course_name.toLowerCase().includes(keyword)
+                val.student_name.toLowerCase().includes(keyword) ||
+                val.student_name.toLowerCase().includes(keyword)
               ) {
                 return val;
               }

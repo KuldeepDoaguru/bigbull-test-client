@@ -6,6 +6,7 @@ import Navbar from "../../Navbar";
 import ManageNav from "./ManageNav";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
+import cogoToast from "cogo-toast";
 
 const EditCourseVideo = () => {
   const { cid, vid } = useParams();
@@ -15,14 +16,14 @@ const EditCourseVideo = () => {
   const [video_title, setvideotitle] = useState("");
   const [chapterID, setChapterID] = useState("");
   const [video_description, setvideodescription] = useState("");
-  const [course_video, setcoursevideo] = useState(null);
+  const [course_video, setcoursevideo] = useState();
   const [chapterList, setChapterList] = useState([]);
   const [videoData, setVideoData] = useState([]);
 
   const getVideoViaID = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:6060/api/v1/auth/getVideoViaVideoID/${vid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/getVideoViaVideoID/${vid}`
       );
       console.log(response.data.result);
       setVideoData(response.data.result);
@@ -42,10 +43,11 @@ const EditCourseVideo = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:6060/api/v1/auth/updateCourseVideoDetails/${vid}`,
+        `https://admin.bigbulls.co.in/api/v1/auth/updateCourseVideoDetails/${vid}`,
         addvideoformdata
       );
       console.log(response);
+      cogoToast.success("CourseVideoDetails updated successfully");
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +57,7 @@ const EditCourseVideo = () => {
   const deleteVideoViaID = async () => {
     try {
       const response = await axios.delete(
-        `http://localhost:6060/api/v1/auth/deleteVideoViaVid/${vid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/deleteVideoViaVid/${vid}`
       );
       console.log(response);
       toast.success("Video delete successfully");
@@ -74,7 +76,7 @@ const EditCourseVideo = () => {
   const chapterIDList = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:6060/api/v1/auth/getChapterViaId/${cid}`
+        `https://admin.bigbulls.co.in/api/v1/auth/getChapterViaId/${cid}`
       );
       console.log(response.data.result);
       setChapterList(response.data.result);

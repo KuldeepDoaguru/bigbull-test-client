@@ -21,7 +21,7 @@ const AddChapter = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `http://localhost:6060/api/v1/auth/addChapterData/${cid}`,
+        `https://admin.bigbulls.co.in/api/v1/auth/addChapterData/${cid}`,
         formdata
       );
       console.log(response);

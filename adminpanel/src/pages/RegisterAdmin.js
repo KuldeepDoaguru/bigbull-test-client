@@ -14,7 +14,7 @@ const RegisterAdmin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:6060/api/v1/auth/AdminRegister",
+        "https://admin.bigbulls.co.in/api/v1/auth/AdminRegister",
         {
           email,
           password,
@@ -25,6 +25,7 @@ const RegisterAdmin = () => {
       navigate("/login");
     } catch (error) {
       console.log(error);
+      cogoToast.error("Server error");
     }
   };
 
