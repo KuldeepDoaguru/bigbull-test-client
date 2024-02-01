@@ -48,7 +48,7 @@ const createCourse = async (req, res) => {
     if (!thumbnails) {
       return res.status(400).json({ error: "Thumbnail is required" });
     }
-    const imageUrl = `http://localhost:6060/thumbnails/${thumbnails.filename}`;
+    const imageUrl = `https://admin.bigbulls.co.in/thumbnails/${thumbnails.filename}`;
 
     const values = [name, description, price, category, imageUrl];
     const insertQuery = `INSERT INTO courses (course_name, description, price, category, thumbnails) VALUES (?, ?, ?,?, ?)`;
@@ -131,38 +131,35 @@ const editCourse = async (req, res) => {
     const courseId = req.params.courseId;
     const { name, description, price, category } = req.body;
     const thumbnails = req.file;
-    console.log(thumbnails.filename, "40");
 
-    if (!thumbnails) {
-      return res.status(400).json({ error: "Thumbnail is required" });
-    }
-    const imageUrl = `http://localhost:6060/thumbnails/${thumbnails.filename}`;
-
+    const imageUrl = `https://admin.bigbulls.co.in/thumbnails/${thumbnails?.filename}`;
     const getQuery = `SELECT * FROM courses WHERE course_id = ?`;
+
     db.query(getQuery, courseId, (err, result) => {
       if (err) {
-        res.status(500).json({ error: "Invalid Course ID" });
+        return res.status(500).json({ error: "Invalid Course ID" });
       }
+
       if (result && result.length > 0) {
         const updateFields = [];
         const updateValues = [];
 
-        if (name) {
+        if (name !== "undefined") {
           updateFields.push("course_name = ?");
           updateValues.push(name);
         }
 
-        if (description) {
+        if (description !== "undefined") {
           updateFields.push("description = ?");
           updateValues.push(description);
         }
 
-        if (price) {
+        if (price !== "undefined") {
           updateFields.push("price = ?");
           updateValues.push(price);
         }
 
-        if (category) {
+        if (category !== "undefined") {
           updateFields.push("category = ?");
           updateValues.push(category);
         }
@@ -170,6 +167,13 @@ const editCourse = async (req, res) => {
         if (thumbnails) {
           updateFields.push("thumbnails = ?");
           updateValues.push(imageUrl);
+        }
+
+        if (updateFields.length === 0) {
+          return res.status(400).json({
+            success: false,
+            message: "No fields to update",
+          });
         }
 
         const updateQuery = `UPDATE courses SET ${updateFields.join(
@@ -192,7 +196,7 @@ const editCourse = async (req, res) => {
       } else {
         return res.status(404).json({
           success: false,
-          message: "User not found",
+          message: "Course not found",
         });
       }
     });
@@ -366,7 +370,7 @@ const addChapterData = (req, res) => {
       return res.status(400).json({ error: "Thumbnail is required" });
     }
 
-    const questionUrl = `http://localhost:6060/questionSheet/${questionSheet.filename}`;
+    const questionUrl = `https://admin.bigbulls.co.in/questionSheet/${questionSheet.filename}`;
     console.log(questionUrl);
 
     const getQuery = `SELECT * FROM courses WHERE course_id = ?`;
@@ -486,11 +490,11 @@ const updateCourseVideoDetails = (req, res) => {
     const { title, chapterID, duration, description } = req.body;
     const videoFile = req.file;
 
-    if (!videoFile) {
-      return res.status(400).json({ error: "Video file is required" });
-    }
+    // if (!videoFile) {
+    //   return res.status(400).json({ error: "Video file is required" });
+    // }
 
-    const videoUrl = `http://localhost:${PORT}/videoCourse/${videoFile.filename}`;
+    const videoUrl = `${PORT}/videoCourse/${videoFile?.filename}`;
     console.log(videoUrl);
 
     const getQuery = `SELECT * FROM course_videos WHERE coursevideo_id = ?`;
@@ -521,9 +525,16 @@ const updateCourseVideoDetails = (req, res) => {
           updateFields.push("duration = ?");
           updateValues.push(duration);
         }
-        if (videoUrl) {
+        if (videoFile) {
           updateFields.push("video_url = ?");
           updateValues.push(videoUrl);
+        }
+        console.log(updateFields, "532");
+        if (updateFields.length === 0) {
+          return res.status(400).json({
+            success: false,
+            message: "No fields to update",
+          });
         }
 
         const updateQuery = `UPDATE course_videos SET ${updateFields.join(
@@ -580,13 +591,13 @@ const updateChapterDataViaChid = (req, res) => {
     const chName = req.body.chName;
     const questionSheet = req.file;
 
-    console.log(questionSheet.filename, "582");
+    console.log(questionSheet?.filename, "582");
 
-    if (!questionSheet) {
-      return res.status(400).json({ error: "Thumbnail is required" });
-    }
+    // if (!questionSheet) {
+    //   return res.status(400).json({ error: "Thumbnail is required" });
+    // }
 
-    const questionUrl = `http://localhost:6060/questionSheet/${questionSheet.filename}`;
+    const questionUrl = `https://admin.bigbulls.co.in/questionSheet/${questionSheet?.filename}`;
     console.log(questionUrl);
 
     const getQuery = `SELECT * FROM chapters WHERE ch_id = ?`;
@@ -606,6 +617,14 @@ const updateChapterDataViaChid = (req, res) => {
         if (questionSheet) {
           updateFields.push("question_sheet = ?");
           updateValues.push(questionUrl);
+        }
+
+        console.log(updateFields, "622");
+        if (updateFields.length === 0) {
+          return res.status(400).json({
+            success: false,
+            message: "No fields to update",
+          });
         }
 
         const updateQuery = `UPDATE chapters SET ${updateFields.join(

@@ -122,6 +122,6 @@ router.put(
 );
 
 router.delete("/deleteChapterDataViaChid/:chid", deleteChapterDataViaChid);
-router.delete("/deleteVideoViaVid/:vid", deleteVideoViaVid)
+router.delete("/deleteVideoViaVid/:vid", deleteVideoViaVid);
 
 module.exports = router;
