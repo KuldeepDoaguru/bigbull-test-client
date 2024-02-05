@@ -329,37 +329,24 @@ const addToWishlist = async (req, res) => {
   try {
     const { userId, productId } = req.params;
 
-    // Check if the wishlist already exists for the user
-    db.query(
-      "SELECT * FROM wishlists WHERE user_id = ?",
-      [userId],
-      async (err, result) => {
-        if (err) {
-          res
-            .status(500)
-            .json({ success: false, message: "Internal Server Error" });
-        }
-        if (result.length === 0) {
-          await db.query(
-            "INSERT INTO wishlists (user_id,	item_id) VALUES (?,?)",
-            [userId, productId]
-          );
-        } else {
-          const isProductInWishlist = result[0].item_id.includes(productId);
-          if (!isProductInWishlist) {
-            await db.query(
-              "UPDATE wishlists SET item_id = CONCAT(item_id, ',',?) WHERE user_id = ?",
-              [userId, productId]
-            );
-          }
-        }
-        res.status(201).json({
-          success: true,
-          message: "Product added to wishlist successfully",
-          result,
-        });
+    const getQuery = `SELECT * FROM wishlists WHERE user_id = ? AND item_id = ?`;
+    db.query(getQuery, [userId, productId], (err, result) => {
+      if (err) {
+        return res.status(400).send(err);
       }
-    );
+      if (result && result.length > 0) {
+        return res.status(400).send("item is already in the wishlist");
+      }
+
+      const insertQuery = `INSERT INTO wishlists (user_id, item_id) VALUES (?, ?)`;
+      db.query(insertQuery, [userId, productId], (insertErr, insertResult) => {
+        if (insertErr) {
+          return res.status(400).send(err);
+        } else {
+          return res.status(200).send("Item Added Successfully");
+        }
+      });
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -811,6 +798,51 @@ const PurchasedCourseViaUser = (req, res) => {
   }
 };
 
+const deleteCourseFromWishlist = async (req, res) => {
+  try {
+    const courseId = req.params.courseId;
+
+    db.query(
+      "SELECT * FROM wishlists WHERE item_id = ?",
+      [courseId],
+      async (err, result) => {
+        if (err) {
+          return res
+            .status(500)
+            .json({ success: false, message: "Internal Server Error" });
+        }
+
+        if (result.length === 0) {
+          return res
+            .status(404)
+            .json({ success: false, message: "Course not found" });
+        }
+
+        db.query(
+          "DELETE FROM wishlists WHERE item_id = ?",
+          [courseId],
+          async (err, result) => {
+            if (err) {
+              return res.status(500).json({
+                success: false,
+                message: "Error while deleting course",
+              });
+            }
+
+            res.status(200).json({
+              success: true,
+              message: "Course deleted successfully",
+              courseId,
+            });
+          }
+        );
+      }
+    );
+  } catch (error) {
+    console.log("error :", error);
+  }
+};
+
 module.exports = {
   addToCart,
   createCourse,
@@ -836,4 +868,5 @@ module.exports = {
   updateStatus,
   deleteCart,
   PurchasedCourseViaUser,
+  deleteCourseFromWishlist,
 };

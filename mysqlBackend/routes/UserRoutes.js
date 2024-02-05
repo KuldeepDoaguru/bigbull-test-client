@@ -42,7 +42,11 @@ const prostorage = multer.diskStorage({
 });
 
 const proupload = multer({ storage: prostorage });
-router.put("/users/:id", proupload.single("profilePicture"), updateUsers);
+router.put(
+  "/update-users/:id",
+  proupload.single("profilePicture"),
+  updateUsers
+);
 router.get("/getUserViaId/:id", getUserViaId);
 router.post("/addToWishlist/:userId/:productId", addToWishlist);
 router.get("/getWishlistItems/:userId", getWishlistItems);

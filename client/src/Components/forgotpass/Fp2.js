@@ -5,6 +5,7 @@ import contactpic from "../photos/contactuspic.png";
 import cogoToast from "cogo-toast";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import styled from "styled-components";
 
 const Fp2 = (props) => {
   const [pwd, setPwd] = useState("");
@@ -42,49 +43,76 @@ const Fp2 = (props) => {
 
   return (
     <>
-      <div className="contact-outer">
-        <div className="contact-inner pt-5">
-          <p>Forgot Password</p>
-          <div className="contact-innermost">
-            <img src={contactpic} />
-            <form>
-              <p>Reset Password</p>
-              <input
-                name="pwd"
-                value={pwd}
-                onChange={(e) => setPwd(e.target.value)}
-                id="pwd"
-                placeholder="New Password"
-                type={"password"}
-              />
+      <Container>
+        <div className="contact-outer">
+          <div className="contact-inner">
+            <p className="fw-bold text-center fs-1">Reset Password</p>
+            <div className="container mt-3">
+              <div className="row">
+                <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                  <img src={contactpic} />
+                </div>
+                <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                  <form>
+                    <p className="fw-bold">Reset Password</p>
+                    <div className="inputgroup">
+                      <input
+                        name="pwd"
+                        value={pwd}
+                        onChange={(e) => setPwd(e.target.value)}
+                        id="pwd"
+                        placeholder="New Password"
+                        type={"password"}
+                      />
 
-              <input
-                name="cpwd"
-                value={cpwd}
-                onChange={(e) => setCpwd(e.target.value)}
-                id="cpwd"
-                placeholder="Confirm Password"
-                type={"password"}
-              />
+                      <input
+                        name="cpwd"
+                        value={cpwd}
+                        onChange={(e) => setCpwd(e.target.value)}
+                        id="cpwd"
+                        placeholder="Confirm Password"
+                        type={"password"}
+                        className="mt-2"
+                      />
 
-              <input
-                name="code"
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-                placeholder="Enter Verification Code"
-                type={"text"}
-              />
+                      <input
+                        name="code"
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                        placeholder="Enter Verification Code"
+                        type={"text"}
+                        className="mt-2"
+                      />
 
-              <button onClick={changePassword} style={{ width: "200px" }}>
-                Change Password
-              </button>
-            </form>
+                      <button
+                        className="btn btn-info mt-2 mb-5"
+                        onClick={changePassword}
+                        style={{ width: "200px" }}
+                      >
+                        Change Password
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <ToastContainer />
+        <ToastContainer />
+      </Container>
     </>
   );
 };
 
 export default Fp2;
+const Container = styled.div`
+  .inputgroup {
+    display: flex;
+    flex-direction: column;
+    input {
+      padding: 1rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 0.5rem;
+    }
+  }
+`;

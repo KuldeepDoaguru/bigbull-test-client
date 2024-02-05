@@ -23,6 +23,7 @@ const Enrollnow = () => {
     cpassword: "",
     country: "",
     state: "",
+    city: "",
     address: "",
     dob: "",
     refferelCode: "",
@@ -131,194 +132,211 @@ const Enrollnow = () => {
         }
       );
 
-      if (response.status === 201) {
-        cogoToast.success("Registration successful!");
-        navigate("/login");
-      } else {
-        cogoToast.success(response.data.message);
-        navigate("/login");
-      }
+      cogoToast.success("Registration successful!");
+      navigate("/login");
+
+      // if (response.status === 201) {
+
+      // } else {
+      //   cogoToast.error(response);
+      //   // navigate("/login");
+      // }
     } catch (error) {
-      cogoToast.error(error.response?.data || "An Error occured");
+      console.log(error);
+      cogoToast.error(error.response.data || "An error occurred");
     }
   };
 
   return (
     <>
       <Container>
-        <div>{/* <img src={enroll} alt="about" /> */}</div>
-        <div className="marginseter">
-          <form onSubmit={register} enctype="multipart/form-data">
-            <div className="outer-enrollnow-container">
-              <div className="enrollnow-container">
-                <div className="enrollnow-left">
-                  <img src={logoimg} alt="user" />
-                </div>
+        <div className="container">
+          <div className="marginseter">
+            <form onSubmit={register} enctype="multipart/form-data">
+              <div className="outer-enrollnow-container">
+                <div className="enrollnow-container">
+                  <div className="enrollnow-left">
+                    <img src={logoimg} alt="user" />
+                  </div>
 
-                <div className="enrollnow-right">
-                  <h1>Register to Bigbulls</h1>
-                  <br />
+                  <div className="enrollnow-right">
+                    <h1>Register to Bigbulls</h1>
+                    <br />
 
-                  <div className="sub">
-                    <div className="row g-3">
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label for="name">
-                          Name<span style={{ color: "red" }}>*</span>
-                        </label>
-                        <input
-                          type="text"
-                          name="name"
-                          value={data.name}
-                          onChange={handleInputChange}
-                          required
-                          placeholder="Enter your Full Name"
-                        />
-                      </div>
+                    <div className="sub">
+                      <div className="row g-3">
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label for="name">
+                            Name<span style={{ color: "red" }}>*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="name"
+                            value={data.name}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="Enter your Full Name"
+                          />
+                        </div>
 
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label for="email">
-                          Email<span style={{ color: "red" }}>*</span>
-                        </label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={data.email}
-                          required
-                          onChange={handleInputChange}
-                          placeholder="xyz@gmail.com"
-                        />
-                      </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label for="email">
+                            Email<span style={{ color: "red" }}>*</span>
+                          </label>
+                          <input
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            required
+                            onChange={handleInputChange}
+                            placeholder="xyz@gmail.com"
+                          />
+                        </div>
 
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label>
-                          Enter Mobile number
-                          <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <input
-                          type="text"
-                          name="phone"
-                          value={data.phone}
-                          maxLength={10}
-                          required
-                          onChange={handleInputChange}
-                          placeholder="Enter Mobile Number Without Country Code"
-                        />
-                      </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label>
-                          Gender<span style={{ color: "red" }}>*</span>
-                        </label>
-                        <select
-                          id="gender"
-                          name="gender"
-                          value={data.gender}
-                          required
-                          onChange={handleInputChange}
-                          className="inputsel"
-                        >
-                          <option value="">Select an Option</option>
-                          <option value="Male">Male</option>
-                          <option value="Female">Female</option>
-                          <option value="other">ohter</option>
-                        </select>
-                      </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label>
-                          Create password<span style={{ color: "red" }}>*</span>
-                        </label>
-                        <input
-                          name="password"
-                          value={data.password}
-                          onChange={handleInputChange}
-                          className="inputsel"
-                          required
-                          type="password"
-                          placeholder="Enter Password"
-                          id="password"
-                        />
-                      </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label>
-                          Confirm password
-                          <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <input
-                          type="password"
-                          name="cpassword"
-                          placeholder="Enter Password"
-                          id="cpassword"
-                          required
-                          value={data.cpassword}
-                          className="inputsel"
-                          onChange={handleInputChange}
-                        />
-                        <span id="message"></span>
-                      </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label htmlFor="country">
-                          Choose your country from the list
-                          <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <select
-                          id="country"
-                          name="country"
-                          value={data.country}
-                          required
-                          onChange={handleInputChange}
-                          className="inputsel"
-                        >
-                          <option value="">Select an Option</option>
-                          {allCountries.map((country) => (
-                            <option key={country} value={country}>
-                              {country}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label htmlFor="state">
-                          Choose your state from the list
-                          <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <select
-                          id="state"
-                          name="state"
-                          value={data.state}
-                          onChange={handleInputChange}
-                          required
-                          className="inputsel"
-                          disabled={!data.country}
-                        >
-                          <option value="">Select an Option</option>
-                          {data.country &&
-                            countryToStatesMap[data.country].map((state) => (
-                              <option key={state} value={state}>
-                                {state}
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label>
+                            Enter Mobile number
+                            <span style={{ color: "red" }}>*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="phone"
+                            value={data.phone}
+                            maxLength={10}
+                            required
+                            onChange={handleInputChange}
+                            placeholder="Enter Mobile Number Without Country Code"
+                          />
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label>
+                            Gender<span style={{ color: "red" }}>*</span>
+                          </label>
+                          <select
+                            id="gender"
+                            name="gender"
+                            value={data.gender}
+                            required
+                            onChange={handleInputChange}
+                            className="inputsel"
+                          >
+                            <option value="">Select an Option</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="other">ohter</option>
+                          </select>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label>
+                            Create password
+                            <span style={{ color: "red" }}>*</span>
+                          </label>
+                          <input
+                            name="password"
+                            value={data.password}
+                            onChange={handleInputChange}
+                            className="inputsel"
+                            required
+                            type="password"
+                            placeholder="Enter Password"
+                            id="password"
+                          />
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label>
+                            Confirm password
+                            <span style={{ color: "red" }}>*</span>
+                          </label>
+                          <input
+                            type="password"
+                            name="cpassword"
+                            placeholder="Enter Password"
+                            id="cpassword"
+                            required
+                            value={data.cpassword}
+                            className="inputsel"
+                            onChange={handleInputChange}
+                          />
+                          <span id="message"></span>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label htmlFor="country">
+                            Choose your country from the list
+                            <span style={{ color: "red" }}>*</span>
+                          </label>
+                          <select
+                            id="country"
+                            name="country"
+                            value={data.country}
+                            required
+                            onChange={handleInputChange}
+                            className="inputsel"
+                          >
+                            <option value="">Select an Option</option>
+                            {allCountries.map((country) => (
+                              <option key={country} value={country}>
+                                {country}
                               </option>
                             ))}
-                        </select>
-                      </div>
-                      <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label>
-                          Enter Address<span style={{ color: "red" }}>*</span>
-                        </label>
-                        <input
-                          type="text"
-                          name="address"
-                          value={data.address}
-                          onChange={handleInputChange}
-                          required
-                          placeholder="Enter your address"
-                        />
-                      </div>
+                          </select>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label htmlFor="state">
+                            Choose your state from the list
+                            <span style={{ color: "red" }}>*</span>
+                          </label>
+                          <select
+                            id="state"
+                            name="state"
+                            value={data.state}
+                            onChange={handleInputChange}
+                            required
+                            className="inputsel"
+                            disabled={!data.country}
+                          >
+                            <option value="">Select an Option</option>
+                            {data.country &&
+                              countryToStatesMap[data.country].map((state) => (
+                                <option key={state} value={state}>
+                                  {state}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label>
+                            Enter City<span style={{ color: "red" }}>*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="city"
+                            value={data.city}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="Enter your city"
+                          />
+                        </div>
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label>
+                            Enter Address<span style={{ color: "red" }}>*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="address"
+                            value={data.address}
+                            onChange={handleInputChange}
+                            required
+                            placeholder="Enter your address"
+                          />
+                        </div>
 
-                      <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                        <label for="dateInput">
-                          Enter Date of Birth
-                          <span style={{ color: "red" }}>*</span>
-                        </label>
-                        <div class="input-group">
-                          {/* <DatePicker
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label for="dateInput">
+                            Enter Date of Birth
+                            <span style={{ color: "red" }}>*</span>
+                          </label>
+                          <div class="input-group">
+                            {/* <DatePicker
                             selected={data.dob}
                             onChange={(date) => handleDateChange(date)}
                             className="form-control inputsel"
@@ -326,64 +344,64 @@ const Enrollnow = () => {
                             placeholderText="Enter Date of Birth"
                           /> */}
 
-                          <DatePicker
-                            selected={data.dob}
-                            onChange={(date) => handleDateChange(date)}
-                            className="form-control"
-                            dateFormat="yyyy-MM-dd"
-                            placeholderText="Select a date"
+                            <DatePicker
+                              selected={data.dob}
+                              onChange={(date) => handleDateChange(date)}
+                              className="form-control"
+                              dateFormat="yyyy-MM-dd"
+                              placeholderText="Select a date"
+                              required
+                              value={data.dob}
+                              showMonthDropdown={true}
+                              showYearDropdown={true}
+                              scrollableYearDropdown={false}
+                            />
+                          </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label for="profilePicture">
+                            Upload Profile Picture
+                            <span style={{ color: "red" }}>*</span>
+                          </label>
+                          <input
+                            type="file"
+                            name="profilePicture"
+                            accept=".pdf, .jpg, .jpeg, .png"
                             required
-                            value={data.dob}
-                            showMonthDropdown={true}
-                            showYearDropdown={true}
-                            scrollableYearDropdown={false}
+                            onChange={handleBirthCertificateChange}
+                          />
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                          <label for="refferelCode">Add Referrel Code</label>
+                          <input
+                            name="refferelCode"
+                            value={data.refferelCode}
+                            onChange={handleInputChange}
+                            placeholder="Enter Referral Code"
+                            type="text"
                           />
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="row">
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                      <label for="profilePicture">
-                        Upload Profile Picture
-                        <span style={{ color: "red" }}>*</span>
-                      </label>
-                      <input
-                        type="file"
-                        name="profilePicture"
-                        accept=".pdf, .jpg, .jpeg, .png"
-                        required
-                        onChange={handleBirthCertificateChange}
-                      />
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                      <label for="refferelCode">Add Referrel Code</label>
-                      <input
-                        name="refferelCode"
-                        value={data.refferelCode}
-                        onChange={handleInputChange}
-                        placeholder="Enter Referral Code"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <br />
-                  <button className="submitbtn" type="submit">
-                    submit
-                  </button>
+                    <div className="row"></div>
+                    <br />
+                    <button className="submitbtn" type="submit">
+                      submit
+                    </button>
 
-                  <hr className="light-grey-hr" />
-                  <p>
-                    Already have an account? <Link to="/login">Login</Link>
-                  </p>
+                    <hr className="light-grey-hr" />
+                    <p>
+                      Already have an account? <Link to="/login">Login</Link>
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </form>
-        </div>
+            </form>
+          </div>
 
-        <ToastContainer />
+          <ToastContainer />
+        </div>
       </Container>
     </>
   );
@@ -400,10 +418,19 @@ const Container = styled.div`
   }
   .marginseter {
     margin-top: 4rem;
+    height: 100%;
     margin-bottom: 4rem;
     @media screen and (max-width: 500px) {
       margin-top: 8rem;
       margin-bottom: 8rem;
     }
+  }
+
+  .react-datepicker__navigation--years-upcoming {
+    background: radial-gradient(#ff0000, #fdfdfd);
+  }
+
+  .react-datepicker__navigation--years-previous {
+    background: radial-gradient(#ff0000, #fdfdfd);
   }
 `;

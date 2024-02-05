@@ -48,20 +48,6 @@ const Home = () => {
           {/* Carousel */}
           <div className="carousel-container">
             <Carousel>
-              {carousel.map((e) => {
-                return (
-                  <Carousel.Item interval={1000}>
-                    <a href={e.youtube_link}>
-                      {" "}
-                      <img
-                        className="d-block w-100 cr-img"
-                        src={e.carouselcard_img}
-                        alt={"/" + e.carouselcard_name}
-                      />
-                    </a>
-                  </Carousel.Item>
-                );
-              })}
               <Carousel.Item interval={1000}>
                 <img
                   className="d-block w-100 cr-img"

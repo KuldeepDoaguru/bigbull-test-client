@@ -44,7 +44,7 @@ router.post("/addtocart/:userId/:productId", addtocartBack);
 router.get("/getCartItems/:userId", getCartItems);
 router.post("/AdminRegister", AdminRegister);
 router.post("/adminLoginUser", adminLoginUser);
-router.post("/sendOtpAdmin", sendOtpAdmin);
+// router.post("/sendOtpAdmin", sendOtpAdmin);
 router.post("/verifyOtp", verifyOtp);
 router.put("/updateAdminPassword", updateAdminPassword);
 router.delete("/deleteUser/:userId", deleteUser);

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { BsSuitHeartFill, BsSuitHeart, BsCart3, BsBell } from "react-icons/bs";
 import axios from "axios";
 import useRazorpay, { RazorpayOptions } from "react-razorpay";
+import cogoToast from "cogo-toast";
 
 const loadScript = (src) => {
   return new Promise((resolve, reject) => {
@@ -188,6 +189,19 @@ const CartPage = () => {
     }
   };
 
+  const removeCartItems = async (cid) => {
+    try {
+      const response = await axios.delete(
+        `https://bigbulls.co.in/api/v1/auth/deleteCourse/${cid}`
+      );
+      console.log(response);
+      cogoToast.success("cart items removed successfully");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <Container>
@@ -254,12 +268,12 @@ const CartPage = () => {
                           </div>
                           <h5 className="text-start">Price - ₹{item.price}</h5>
                           <div className="d-flex justify-content-start">
-                            <a
-                              href="/course-cart"
+                            <button
                               className="btn btn-danger mt-1"
+                              onClick={() => removeCartItems(item.course_id)}
                             >
                               Remove from Cart
-                            </a>
+                            </button>
                           </div>
                         </div>
                       </div>

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { BsSuitHeartFill, BsSuitHeart, BsCart3, BsBell } from "react-icons/bs";
 import axios from "axios";
+import cogoToast from "cogo-toast";
 
 const Whishlist = () => {
   const [allCourses, setallCourses] = useState([]);
@@ -25,19 +26,6 @@ const Whishlist = () => {
     }
   };
 
-  // const responseImage = async (id) => {
-  //   console.log(id);
-  //   try {
-  //     const res = await axios.get(
-  //       `https://bigbulls.co.in/api/v1/auth/thumbnail/${id}`
-  //     );
-  //     console.log(res.data);
-  //     setImages(res.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const displayWishlistItem = async () => {
     try {
       const response = await axios.get(
@@ -56,14 +44,6 @@ const Whishlist = () => {
     displayWishlistItem();
   }, []);
 
-  // useEffect(() => {
-  //   if (allCourses.length > 0) {
-  //     allCourses.forEach((course) => {
-  //       responseImage(course._id);
-  //     });
-  //   }
-  // }, [allCourses]);
-
   useEffect(() => {
     responseCourse();
   }, []);
@@ -73,6 +53,37 @@ const Whishlist = () => {
   );
 
   console.log(coursesInWishlist);
+
+  const addCartTo = async (id) => {
+    try {
+      const response = await axios.post(
+        `https://bigbulls.co.in/api/v1/auth/add-to-cart`,
+        {
+          userId: user.id,
+          itemId: id,
+        }
+      );
+
+      console.log(response);
+      cogoToast.success("Course addded to the cart");
+    } catch (error) {
+      console.log(error);
+      cogoToast.error("course already in the cart");
+    }
+  };
+
+  const removeWishlistItems = async (cid) => {
+    try {
+      const response = await axios.delete(
+        `https://bigbulls.co.in/api/v1/auth/deleteCourseFromWishlist/${cid}`
+      );
+      console.log(response);
+      cogoToast.success("wishlist items removed successfully");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -107,8 +118,8 @@ const Whishlist = () => {
                         </div>
                         <div className="card-body">
                           <h5 className="card-title text-center">
-                            <Link to={`/course-details/${item._id}`}>
-                              {item.name}
+                            <Link to={`/course-details/${item.course_id}`}>
+                              {item.course_name}
                             </Link>
                           </h5>
                           <p className="text-center">{item.category}</p>
@@ -134,15 +145,20 @@ const Whishlist = () => {
                           </div>
                           <h5 className="text-center">Price - ₹{item.price}</h5>
                           <div className="d-flex justify-content-evenly">
-                            <a href="/" className="btn btn-primary mt-1">
+                            <button
+                              className="btn btn-primary mt-1"
+                              onClick={() => addCartTo(item.course_id)}
+                            >
                               Add to Cart
-                            </a>
-                            <a
-                              href="/whishlist"
+                            </button>
+                            <button
                               className="btn btn-danger mt-1"
+                              onClick={() =>
+                                removeWishlistItems(item.course_id)
+                              }
                             >
                               Remove from wishlist
-                            </a>
+                            </button>
                           </div>
                         </div>
                       </div>

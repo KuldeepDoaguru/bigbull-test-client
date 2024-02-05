@@ -11,6 +11,7 @@ const {
   updatePassword,
   contactInquiry,
   getBoughtCourseDetails,
+  sendOtpAdminRegistration,
 } = require("../controllers/authController.js");
 const {
   addCourseVideos,
@@ -45,7 +46,7 @@ router.post("/add-course", upload.single("thumbnails"), createCourse);
 // routing
 // REGISTER || METHOD POST
 router.post("/register", upload.single("profilePicture"), registerController);
-router.post("/login", loginController);
+// router.post("/login", loginController);
 router.post("/sendOtp", sendOtp);
 router.post("/updatePassword", updatePassword);
 router.post("/add-to-cart", addToCart);
@@ -76,6 +77,6 @@ router.get(`/videoListViaCourseId/:courseId`, videoListViaCourseId);
 router.get("/profilePictureView/:userId", profilePictureView);
 router.get("/contactInquiry", contactInquiry);
 router.get("/getBoughtCourseDetails", getBoughtCourseDetails);
-
+// router.post("/sendOtpAdminRegistration", sendOtpAdminRegistration);
 
 module.exports = router;

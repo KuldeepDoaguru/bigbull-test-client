@@ -88,57 +88,57 @@ const registerController = async (req, res) => {
   }
 };
 
-const loginController = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    console.log(req.body);
-    //validation
-    if (!email || !password) {
-      return res.status(404).send({
-        success: false,
-        message: "Invalid email or password",
-      });
-    }
+// const loginController = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     console.log(req.body);
+//     //validation
+//     if (!email || !password) {
+//       return res.status(404).send({
+//         success: false,
+//         message: "Invalid email or password",
+//       });
+//     }
 
-    //check user
-    const user = await userModel.findOne({ email });
-    if (!user) {
-      return res.status(404).send({
-        success: false,
-        message: "Email is not registered",
-      });
-    }
+//     //check user
+//     const user = await userModel.findOne({ email });
+//     if (!user) {
+//       return res.status(404).send({
+//         success: false,
+//         message: "Email is not registered",
+//       });
+//     }
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return res.status(200).send({
-        success: false,
-        message: "Invalid Password",
-      });
-    }
+//     const match = await bcrypt.compare(password, user.password);
+//     if (!match) {
+//       return res.status(200).send({
+//         success: false,
+//         message: "Invalid Password",
+//       });
+//     }
 
-    //token
-    const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
-    });
+//     //token
+//     const token = await JWT.sign({ _id: user._id }, process.env.JWT_SECRET, {
+//       expiresIn: "7d",
+//     });
 
-    res.status(200).send({
-      success: true,
-      message: "login successfully",
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        address: user.address,
-      },
-      token,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ success: false, message: "Error in login", error });
-  }
-};
+//     res.status(200).send({
+//       success: true,
+//       message: "login successfully",
+//       user: {
+//         _id: user._id,
+//         name: user.name,
+//         email: user.email,
+//         phone: user.phone,
+//         address: user.address,
+//       },
+//       token,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).send({ success: false, message: "Error in login", error });
+//   }
+// };
 
 const sendOtp = (req, res) => {
   const { email } = req.body;
@@ -454,7 +454,7 @@ const adminLoginUser = async (req, res) => {
     }
 
     db.query(
-      "SELECT * FROM admin_register WHERE email = ?",
+      `SELECT * FROM admin_register WHERE email = ? AND status = 'active'`,
       [email],
       async (err, result) => {
         if (err) {
@@ -465,9 +465,10 @@ const adminLoginUser = async (req, res) => {
           });
         }
         if (result.length === 0) {
-          return res.status(404).json({
+          return res.status(500).json({
             success: false,
-            message: "Email is not registered",
+            message:
+              "Email is not registered Please contact team for furthur assistance",
           });
         }
 
@@ -503,47 +504,47 @@ const adminLoginUser = async (req, res) => {
   }
 };
 
-const sendOtpAdmin = async (req, res) => {
-  try {
-    const { email } = req.body;
+// const sendOtpAdmin = async (req, res) => {
+//   try {
+//     const { email } = req.body;
 
-    // Generate a 6-digit OTP
-    const otp = generateOTP();
+//     // Generate a 6-digit OTP
+//     const otp = generateOTP();
 
-    // Save or update the OTP in the database
-    await saveOrUpdateOTP(email, otp);
+//     // Save or update the OTP in the database
+//     await saveOrUpdateOTP(email, otp);
 
-    // Configure Nodemailer transporter
-    const transporter = nodemailer.createTransport({
-      service: "Gmail",
-      auth: {
-        user: process.env.EMAILSENDER,
-        pass: process.env.EMAILPASSWORD,
-      },
-    });
+//     // Configure Nodemailer transporter
+//     const transporter = nodemailer.createTransport({
+//       service: "Gmail",
+//       auth: {
+//         user: process.env.EMAILSENDER,
+//         pass: process.env.EMAILPASSWORD,
+//       },
+//     });
 
-    const mailOptions = {
-      from: process.env.EMAILSENDER,
-      to: email,
-      subject: "OTP for Admin Login",
-      text: `Hello Admin,\n\nYour OTP for Admin Login is: ${otp}`,
-    };
+//     const mailOptions = {
+//       from: process.env.EMAILSENDER,
+//       to: email,
+//       subject: "OTP for Admin Login",
+//       text: `Hello Admin,\n\nYour OTP for Admin Login is: ${otp}`,
+//     };
 
-    // Send the email
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error("Error sending email: " + error);
-        res.status(500).json({ error: "Failed to send OTP" });
-      } else {
-        console.log("Email sent: " + info.response);
-        res.status(200).json({ message: "OTP sent successfully" });
-      }
-    });
-  } catch (error) {
-    console.error("Error: " + error);
-    res.status(500).json({ error: "An error occurred" });
-  }
-};
+//     // Send the email
+//     transporter.sendMail(mailOptions, (error, info) => {
+//       if (error) {
+//         console.error("Error sending email: " + error);
+//         res.status(500).json({ error: "Failed to send OTP" });
+//       } else {
+//         console.log("Email sent: " + info.response);
+//         res.status(200).json({ message: "OTP sent successfully" });
+//       }
+//     });
+//   } catch (error) {
+//     console.error("Error: " + error);
+//     res.status(500).json({ error: "An error occurred" });
+//   }
+// };
 
 const verifyOtp = async (req, res) => {
   try {
@@ -778,7 +779,7 @@ const getBoughtCourseDetails = (req, res) => {
 
 module.exports = {
   registerController,
-  loginController,
+  // loginController,
   sendOtp,
   updatePassword,
   manageUsers,
@@ -786,7 +787,7 @@ module.exports = {
   getUserViaId,
   AdminRegister,
   adminLoginUser,
-  sendOtpAdmin,
+  // sendOtpAdmin,
   verifyOtp,
   updateAdminPassword,
   updateProfilePicture,
@@ -794,4 +795,5 @@ module.exports = {
   deleteUser,
   contactInquiry,
   getBoughtCourseDetails,
+  // sendOtpAdminRegistration,
 };

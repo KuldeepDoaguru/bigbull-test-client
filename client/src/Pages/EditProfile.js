@@ -8,6 +8,7 @@ import UpdateProfile from "../Components/userprofilesection/UpdateProfile";
 import { Link } from "react-router-dom";
 import PhotoProfile from "../Components/userprofilesection/PhotoProfile";
 import axios from "axios";
+import DeleteProfile from "../Components/DeleteProfile";
 
 const EditProfile = () => {
   const user = useSelector((state) => state.user);
@@ -65,12 +66,12 @@ const EditProfile = () => {
                         </Nav.Item>
                         <Nav.Item>
                           <Nav.Link eventKey="tab2" className="navlink">
-                            Profile
+                            Edit Profile
                           </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
                           <Nav.Link eventKey="tab3" className="navlink">
-                            Profile Photo
+                            Change Profile Photo
                           </Nav.Link>
                         </Nav.Item>
 
@@ -97,6 +98,7 @@ const EditProfile = () => {
                   {selectedTab === "tab2" && <UpdateProfile />}
                   {selectedTab === "tab3" && <PhotoProfile />}
                   {selectedTab === "tab4" && <Userprofile />}
+                  {selectedTab === "tab5" && <DeleteProfile />}
                 </div>
               </div>
             </div>

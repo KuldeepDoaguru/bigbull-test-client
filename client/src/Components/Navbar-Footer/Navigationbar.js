@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import mainlogo from "../photos/mainlogo.jpg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navigationbar.css";
 import Cookies from "js-cookie";
 import testimg from "../photos/no-profile.jpg";
-// import axios from "axios";
+import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
@@ -16,6 +16,7 @@ const Navigationbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [userdetails, setuserDetails] = useState();
+  const [data, setData] = useState([]);
   const user = useSelector((state) => state.user);
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
@@ -53,6 +54,24 @@ const Navigationbar = () => {
   };
 
   console.log(authToken);
+
+  const getUserProfile = async () => {
+    try {
+      const response = await axios.get(
+        `https://bigbulls.co.in/api/v1/auth/getUserViaId/${user.id}`
+      );
+      console.log(response);
+      setData(response.data.user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(data);
+  useEffect(() => {
+    getUserProfile();
+  }, []);
+
   return (
     <>
       <Container>
@@ -93,7 +112,7 @@ const Navigationbar = () => {
                   </li>
                 ))}
               </ul>
-              <div class="d-flex" role="search">
+              <div class="d-flex align-items-center" role="search">
                 {authToken ? (
                   <>
                     <Link className="nav-link subLink" to="/mylearning">
@@ -111,10 +130,11 @@ const Navigationbar = () => {
                     </Link>
                     <Link className="nav-link" to="/public-view-profile">
                       <div class="icon-container">
-                        <RxAvatar className="icons" />
+                        <img src={data.profile_picture} alt="profile" />
+                        {/* <RxAvatar className="icons" /> */}
                         <ul class="list rounded">
                           <li>
-                            <div className="d-flex justify-content-around">
+                            <div className="d-flex justify-content-around ">
                               <div>
                                 <RxAvatar className="icons-user" />
                               </div>
@@ -215,20 +235,30 @@ const Container = styled.div`
   }
 
   .icon-container {
-    position: relative; /* Set the container to relative positioning */
-    display: inline-block; /* Ensure the container and list stay inline */
+    position: relative;
+    display: inline-block;
+    /* width: 3rem;
+    height: 3rem;
+    overflow: hidden;
+    border-radius: 2rem; */
+    img {
+      width: 3rem;
+      height: 3rem;
+      object-fit: cover;
+      border-radius: 2rem;
+    }
   }
 
   .list {
-    display: none; /* Initially hide the list */
-    position: absolute; /* Position it absolutely within the container */
-    top: 100%; /* Position it below the icon */
-    background-color: #fff; /* Set a background color for the list */
-    border: 1px solid #ccc; /* Add a border for styling */
-    list-style: none; /* Remove the list bullets */
-    padding: 0.5rem; /* Remove padding */
+    display: none;
+    position: absolute;
+    top: 100%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    list-style: none;
+    padding: 0.5rem;
     width: 240px;
-    right: 0; /* Reset any right positioning */
+    right: 0;
     li {
       color: #7f8fa6;
       margin-top: 1rem;

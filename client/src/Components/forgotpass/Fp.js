@@ -22,7 +22,7 @@ const Fp = () => {
 
       console.log(response);
       cogoToast.success("OTP sent successfully");
-      //   navigate("/newpassword");
+      // navigate("/newpassword");
       showForm(false);
     } catch (error) {
       console.log(error);
@@ -33,22 +33,32 @@ const Fp = () => {
       <div className="contact-outer pt-5">
         {fpForm ? (
           <div className="contact-inner mt-3">
-            <p>Forgot Password</p>
-            <div className="contact-innermost">
-              <img src={contactpic} />
-
-              <form onSubmit={sendCode}>
-                <p>Verify Yourself</p>
-                <input
-                  type="email"
-                  name="email"
-                  id="username"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Email"
-                />
-                <button type="submit">Send Code</button>
-              </form>
+            <p className="fw-bold text-center">Forgot Password</p>
+            <div className="container mt-5">
+              <div className="row">
+                <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                  {" "}
+                  <img src={contactpic} />
+                </div>
+                <div className="col-xxl-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                  <form onSubmit={sendCode}>
+                    <p className="fw-bold text-start">Verify Yourself</p>
+                    <input
+                      type="email"
+                      name="email"
+                      id="username"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Email"
+                      className="border p-2 rounded"
+                    />
+                    <br />
+                    <button className="btn btn-info mt-2" type="submit">
+                      Send Code
+                    </button>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
         ) : (

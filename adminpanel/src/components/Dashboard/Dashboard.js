@@ -44,24 +44,6 @@ const Dashboard = () => {
     }
   };
 
-  // Invoice called
-  useEffect(() => {
-    axios
-      .get(`/invoice/invoice`)
-      .then((response) => {
-        setInvoices(response.data);
-      })
-      .catch((e) => {
-        toast.error(e, {
-          position: "top-center",
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          theme: "colored",
-        });
-      });
-  }, []);
-
   // console.log(invoices)
 
   const getdatedifference = (date1, date2) => {
@@ -78,20 +60,20 @@ const Dashboard = () => {
 
   const currentdate = new Date();
 
-  invoices.sort(function (a, b) {
-    return (
-      parseInt(
-        `${new Date(b.createdAt).getFullYear()}` +
-          `${new Date(b.createdAt).getMonth()}` +
-          `${new Date(b.createdAt).getDate()}`
-      ) -
-      parseInt(
-        `${new Date(a.createdAt).getFullYear()}` +
-          `${new Date(a.createdAt).getMonth()}` +
-          `${new Date(a.createdAt).getDate()}`
-      )
-    );
-  });
+  // invoices.sort(function (a, b) {
+  //   return (
+  //     parseInt(
+  //       `${new Date(b.createdAt).getFullYear()}` +
+  //         `${new Date(b.createdAt).getMonth()}` +
+  //         `${new Date(b.createdAt).getDate()}`
+  //     ) -
+  //     parseInt(
+  //       `${new Date(a.createdAt).getFullYear()}` +
+  //         `${new Date(a.createdAt).getMonth()}` +
+  //         `${new Date(a.createdAt).getDate()}`
+  //     )
+  //   );
+  // });
   // console.log(invoices)
   //   const flattenedCourseIds = data
   //     .map((item) => JSON.parse(item.course_id))

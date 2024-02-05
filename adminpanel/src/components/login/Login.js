@@ -57,8 +57,19 @@ const Login = () => {
         cogoToast.error(response.data.message);
       }
     } catch (error) {
-      console.log(error);
-      cogoToast.error(error);
+      console.log("Axios error:", error);
+
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        // If there is a response object and it contains a message property
+        cogoToast.error(error.response.data.message);
+      } else {
+        // If there is no response object or no message property
+        cogoToast.error("An error occurred while processing your request.");
+      }
     }
   };
 

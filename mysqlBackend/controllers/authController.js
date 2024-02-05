@@ -20,6 +20,7 @@ const registerController = async (req, res) => {
       cpassword,
       country,
       state,
+      city,
       address,
       dob,
       refferelCode,
@@ -46,6 +47,7 @@ const registerController = async (req, res) => {
       phone,
       country,
       state,
+      city,
       address,
       dob,
     ];
@@ -73,15 +75,13 @@ const registerController = async (req, res) => {
       } else {
         // Check if there are any rows in the result
         if (result.length > 0) {
-          return res.status(400).json({
-            error: "User already exists.",
-          });
+          return res.status(400).send("User already exists.");
         } else {
           // User not found, proceed with registration
           const insertUserQuery = `
             INSERT INTO register (
-              name, email, phone, gender, password, cpassword, country, state, address, dob, profile_picture, refferel_code
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+              name, email, phone, gender, password, cpassword, country, state, city, address, dob, profile_picture, refferel_code
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           `;
 
           const insertUserParams = [
@@ -93,6 +93,7 @@ const registerController = async (req, res) => {
             hashedCPassword,
             country,
             state,
+            city,
             address,
             dob,
             imageUrl,
@@ -153,11 +154,9 @@ const loginController = async (req, res) => {
         });
       }
 
+      console.log(results.length, "157");
       if (results.length === 0) {
-        return res.status(404).send({
-          success: false,
-          message: "Email is not registered",
-        });
+        return res.status(404).send("Email is not registered");
       }
 
       const user = results[0];
@@ -165,10 +164,7 @@ const loginController = async (req, res) => {
       // Compare passwords
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
-        return res.status(401).send({
-          success: false,
-          message: "Invalid Password",
-        });
+        return res.status(401).send("Invalid Password");
       }
 
       // Generate token
@@ -373,77 +369,111 @@ const manageUsers = async (req, res) => {
 const updateUsers = async (req, res) => {
   try {
     const userId = req.params.id;
-    const {
-      name,
-      email,
-      phone,
-      gender,
-      country,
-      password,
-      cpassword,
-      state,
-      address,
-      dob,
-    } = req.body;
+    const { name, email, phone, gender, country, state, city, address, dob } =
+      req.body;
 
     const profilePicture = req.file;
-    console.log(profilePicture, "pro");
-    if (!profilePicture) {
-      return res.status(400).json({ error: "No file uploaded." });
-    }
+    console.log(profilePicture.filename, "pro");
+    // if (!profilePicture) {
+    //   return res.status(400).json({ error: "No file uploaded." });
+    // }
 
-    const imageUrl = `http://localhost:${PORT}/profilePicture/${profilePicture.originalname}`;
+    const imageUrl = `http://localhost:${PORT}/profilePicture/${profilePicture?.filename}`;
 
     db.query(
-      `SELECT * FROM register WHERE email = ?`,
-      [email],
+      `SELECT * FROM register WHERE id = ?`,
+      [userId],
       async (err, result) => {
         if (err) {
           return res.status(404).send({
             success: false,
             message: "User not found",
           });
-        } else {
-          if (password !== cpassword) {
-            return res.status(400).json({ error: "Passwords do not match" });
+        }
+        if (result && result.length > 0) {
+          const updateFields = [];
+          const updateValues = [];
+
+          if (name) {
+            updateFields.push("name = ?");
+            updateValues.push(name);
           }
 
-          const saltRounds = 10;
-          const hashedPassword = await bcrypt.hash(password, saltRounds);
-          const hashedCPassword = await bcrypt.hash(cpassword, saltRounds);
+          if (email) {
+            updateFields.push("email = ?");
+            updateValues.push(email);
+          }
 
-          const insertUserParams = [
-            name,
-            email,
-            phone,
-            gender,
-            hashedPassword,
-            hashedCPassword,
-            country,
-            state,
-            address,
-            dob,
-            imageUrl,
-          ];
+          if (phone) {
+            updateFields.push("phone = ?");
+            updateValues.push(phone);
+          }
 
-          db.query(
-            `UPDATE register SET name = ?, email = ?, phone = ?, gender = ?, password = ?, cpassword = ?, country = ?, state = ?, address = ?, dob = ?, profile_picture = ? WHERE id = ?`,
-            [...insertUserParams, userId],
-            (err, result) => {
-              if (err) {
-                console.log("error in updating details", err);
-                return res.status(500).json({
-                  success: false,
-                  message: "Internal server error",
-                });
-              }
-              res.status(200).json({
+          if (gender) {
+            updateFields.push("gender = ?");
+            updateValues.push(gender);
+          }
+
+          if (country) {
+            updateFields.push("country = ?");
+            updateValues.push(country);
+          }
+
+          if (state) {
+            updateFields.push("state = ?");
+            updateValues.push(state);
+          }
+
+          if (city) {
+            updateFields.push("city = ?");
+            updateValues.push(city);
+          }
+
+          if (address) {
+            updateFields.push("address = ?");
+            updateValues.push(address);
+          }
+
+          if (dob) {
+            updateFields.push("dob = ?");
+            updateValues.push(dob);
+          }
+
+          if (profilePicture) {
+            updateFields.push("profile_picture = ?");
+            updateValues.push(imageUrl);
+          }
+
+          console.log(updateFields, "447");
+          if (updateFields.length === 0) {
+            return res.status(400).json({
+              success: false,
+              message: "No fields to update",
+            });
+          }
+
+          const updateQuery = `UPDATE register SET ${updateFields.join(
+            ", "
+          )} WHERE id = ?`;
+
+          db.query(updateQuery, [...updateValues, userId], (err, result) => {
+            if (err) {
+              return res.status(500).json({
+                success: false,
+                message: "Failed to update details",
+              });
+            } else {
+              return res.status(200).json({
                 success: true,
-                message: "User details updated successfully",
-                result: result,
+                message: "Details updated successfully",
               });
             }
-          );
+          });
+        } else {
+          return res.status(404).json({
+            success: false,
+            message: "failed to update data",
+          });
         }
       }
     );
@@ -458,26 +488,33 @@ const updateUsers = async (req, res) => {
 
 const getUserViaId = async (req, res) => {
   try {
-    const { id } = req.params; // Remove ".id" from req.params.id
-    db.query("SELECT * FROM register WHERE id = ?", [id], (err, result) => {
-      if (err) {
-        return res.status(500).json({
-          success: false,
-          message: "Error retrieving user: " + err.message,
+    const { id } = req.params;
+    db.query(
+      `SELECT register.*, user_bio.bio
+    FROM register
+    LEFT JOIN user_bio ON register.id = user_bio.user_id
+    WHERE register.id = ?`,
+      [id],
+      (err, result) => {
+        if (err) {
+          return res.status(500).json({
+            success: false,
+            message: "Error retrieving user: " + err.message,
+          });
+        }
+        // Check if user with the given ID exists
+        if (result.length === 0) {
+          return res.status(404).json({
+            success: false,
+            message: "User not found",
+          });
+        }
+        res.status(200).json({
+          success: true,
+          user: result[0], // Assuming you want to send the first user if found
         });
       }
-      // Check if user with the given ID exists
-      if (result.length === 0) {
-        return res.status(404).json({
-          success: false,
-          message: "User not found",
-        });
-      }
-      res.status(200).json({
-        success: true,
-        user: result[0], // Assuming you want to send the first user if found
-      });
-    });
+    );
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -923,6 +960,63 @@ const contactRequest = (req, res) => {
   });
 };
 
+const addUserBio = (req, res) => {
+  const id = req.params.id;
+  const text = req.body.text;
+  try {
+    const getQuery = `SELECT * FROM user_bio WHERE user_id = ?`;
+    db.query(getQuery, id, (err, result) => {
+      if (err) {
+        res.status(400).json({ error: "Invalid ID" });
+      }
+      if (result.length > 0) {
+        res.status(500).json({ message: "BIO already exists" });
+      } else {
+        const insertQuery = "INSERT INTO user_bio (user_id, bio) VALUES (?, ?)";
+        db.query(insertQuery, [id, text], (resErr, resResult) => {
+          if (resErr) {
+            console.error(resErr); // Log the actual error for debugging
+            res
+              .status(500)
+              .json({ message: "Error creating bio", error: resErr.message });
+          } else {
+            res.status(200).json({ resResult });
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("An error occurred while saving data to the database");
+  }
+};
+
+const updateUserBio = (req, res) => {
+  const id = req.params.id;
+  const newText = req.body.text;
+  try {
+    const getQuery = `SELECT * FROM user_bio WHERE user_id = ?`;
+    db.query(getQuery, id, (err, result) => {
+      if (err) {
+        res.status(400).json({ error: "Invalid ID" });
+      }
+      if (result && result.length > 0) {
+        const updateQuery = `UPDATE user_bio SET bio = ? WHERE user_id = ?`;
+        db.query(updateQuery, [newText, id], (resErr, resResult) => {
+          if (resErr) {
+            res.status(500).json({ error: "Error updating bio" });
+          } else {
+            res.status(200).json({ message: "Bio updated successfully" });
+          }
+        });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("An error occurred while updating");
+  }
+};
+
 module.exports = {
   registerController,
   loginController,
@@ -938,4 +1032,6 @@ module.exports = {
   updateProfilePicture,
   profilePictureView,
   contactRequest,
+  addUserBio,
+  updateUserBio,
 };

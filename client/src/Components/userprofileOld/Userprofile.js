@@ -9,8 +9,8 @@ const Userprofile = () => {
   return (
     <>
       <Container>
-        <div>
-          <h1>Hello</h1>
+        <div className="main-subs">
+          <h1 className="text-center">Hello</h1>
         </div>
       </Container>
     </>
@@ -21,4 +21,7 @@ export default Userprofile;
 const Container = styled.div`
   height: 100%;
   background: black;
+  .main-subs {
+    height: 100vh;
+  }
 `;

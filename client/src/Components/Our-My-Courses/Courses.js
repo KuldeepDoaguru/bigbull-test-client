@@ -97,14 +97,15 @@ const Courses = () => {
     console.log(user.id);
     try {
       const response = await axios.post(
-        `https://bigbulls.co.in/api/v1/auth/addToWishlist/${user.id}/${id}`,
-        { userId: user.id, productId: id }
+        `https://bigbulls.co.in/api/v1/auth/addToWishlist/${user.id}/${id}`
       );
 
       console.log(response);
       cogoToast.success("Course addded to the wishlist");
+      window.location.reload();
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+      cogoToast.error(error.response.data);
     }
   };
 

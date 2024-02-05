@@ -11,6 +11,8 @@ const {
   updatePassword,
   updateProfilePicture,
   contactRequest,
+  addUserBio,
+  updateUserBio,
 } = require("../controllers/authController.js");
 const {
   addCourseVideos,
@@ -28,6 +30,7 @@ const {
   downloadQuestionSheet,
   UploadAnswerSheet,
   CoursePayment,
+  deleteCourseFromWishlist,
 } = require("../controllers/ItemController.js");
 
 // router object
@@ -79,6 +82,7 @@ router.get("/getAllCourses", getAllCourses);
 router.get("/coursePage/:courseId", coursePage);
 
 router.delete("/deleteCourse/:courseId", deleteCourse);
+router.delete("/deleteCourseFromWishlist/:courseId", deleteCourseFromWishlist);
 
 const Videostorage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -150,5 +154,6 @@ router.post(
 );
 
 router.post("/CoursePayment", CoursePayment);
-
+router.post("/addUserBio/:id", addUserBio);
+router.put("/updateUserBio/:id", updateUserBio);
 module.exports = router;
