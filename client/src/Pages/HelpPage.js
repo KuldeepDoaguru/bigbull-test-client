@@ -14,7 +14,7 @@ const HelpPage = () => {
             </h1>
             <div className="row mt-3 g-2">
               <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
-                <div class="card shadow pt-5 pb-5" style={{ width: "18rem" }}>
+                <div class="card shadow pt-5 pb-5">
                   <div class="card-body">
                     <h5 class="card-title text-center">Payment Support</h5>
                     <div className="spcont mt-3 g-5">
@@ -35,7 +35,7 @@ const HelpPage = () => {
               </div>
               <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                 {" "}
-                <div class="card shadow pt-5 pb-5" style={{ width: "18rem" }}>
+                <div class="card shadow pt-5 pb-5">
                   <div class="card-body">
                     <h5 class="card-title text-center">Technical Support</h5>
                     <div className="spcont mt-3 g-5">
@@ -56,7 +56,7 @@ const HelpPage = () => {
               </div>
               <div className="col-xxl-4 col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
                 {" "}
-                <div class="card shadow pt-5 pb-5" style={{ width: "18rem" }}>
+                <div class="card shadow pt-5 pb-5">
                   <div class="card-body">
                     <h5 class="card-title text-center">Instructor Support</h5>
                     <div className="spcont mt-3 g-5">

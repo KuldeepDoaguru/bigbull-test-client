@@ -127,7 +127,7 @@ const Footer = () => {
 
 export default Footer;
 const Container = styled.div`
-  background: linear-gradient(to top, #7f7fd5, #86a8e7, #91eae4);
+  background: linear-gradient(to top, #7f7fd5, #91eae4, #91eae4);
   /* background-color: #f5f5f587; */
   .foot-data {
     @media screen and (max-width: 500px) {

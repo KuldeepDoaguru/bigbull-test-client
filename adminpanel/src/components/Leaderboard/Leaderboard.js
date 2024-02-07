@@ -4,6 +4,7 @@ import Navbar from "../Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import styled from "styled-components";
 
 const Leaderboard = () => {
   const [lbdetails, setlbDeatils] = useState([]);
@@ -58,77 +59,94 @@ const Leaderboard = () => {
 
   return (
     <>
-      <div className="recentpurchases-outer">
-        <Navbar />
-        <div className="head-main">Leaderboard</div>
-        <div className="searchbar">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+      <Container>
+        <div className="container">
+          <Navbar />
+          <div className="head-main">Leaderboard</div>
+          <div className="searchbar">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+            <input
+              placeholder="Search by username or user email"
+              value={keyword}
+              onChange={(e) => setkeyword(e.target.value.toLowerCase())}
             />
-          </svg>
-          <input
-            placeholder="Search by username or user email"
-            value={keyword}
-            onChange={(e) => setkeyword(e.target.value.toLowerCase())}
-          />
-        </div>
-        <div className="table">
-          <div className="table-head">
-            <p className="table-sno">Sno.</p>
-            <p className="table-small">Email ID</p>
-            <p className="table-small">User name</p>
-            <p className="table-small">Total Amount</p>
           </div>
-          <div className="table-body">
-            {allUser
-              .filter((val) => {
-                if (keyword === "") {
-                  return true;
-                } else if (
-                  val.name.toLowerCase().includes(keyword) ||
-                  val.name.toLowerCase().includes(keyword)
-                ) {
-                  return val;
-                }
-              })
-              .map((e, i) => {
-                // Filter userLeader for the current user and calculate total amount
-                const totalAmount = userLeader
-                  .filter((item) => item.student_id === e.id)
-                  .reduce((sum, item) => sum + parseInt(item.amount, 10), 0);
 
-                return {
-                  index: i,
-                  email: e.email,
-                  name: e.name,
-                  totalAmount: totalAmount,
-                };
-              })
-              .sort((a, b) => b.totalAmount - a.totalAmount) // Sort by totalAmount in descending order
-              .map((user, i) => (
-                <div className="table-row" key={user.index}>
-                  <p className="table-sno">{i + 1}</p>
-                  <p className="table-small">{user.email}</p>
-                  <p className="table-small">{user.name}</p>
-                  <p className="table-small">₹ {user.totalAmount}</p>
-                </div>
-              ))}
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead className="table-head">
+                <tr>
+                  <th className="table-sno" style={{ width: "10%" }}>
+                    SN
+                  </th>
+                  <th className="table-small" style={{ width: "20%" }}>
+                    Email ID
+                  </th>
+                  <th className="table-small" style={{ width: "20%" }}>
+                    User name
+                  </th>
+                  <th className="table-small" style={{ width: "10%" }}>
+                    Total Amount
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {allUser
+                  .filter((val) => {
+                    if (keyword === "") {
+                      return true;
+                    } else if (
+                      val.name.toLowerCase().includes(keyword) ||
+                      val.name.toLowerCase().includes(keyword)
+                    ) {
+                      return val;
+                    }
+                  })
+                  .map((user, i) => {
+                    return (
+                      <tr className="table-row" key={user.id}>
+                        <td className="table-sno" style={{ width: "10%" }}>
+                          {i + 1}
+                        </td>
+                        <td className="table-small" style={{ width: "20%" }}>
+                          {user.email}
+                        </td>
+                        <td className="table-small" style={{ width: "20%" }}>
+                          {user.name}
+                        </td>
+                        <td className="table-small" style={{ width: "10%" }}>
+                          ₹ {user.totalAmount}
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
           </div>
         </div>
-      </div>
-      <ToastContainer />
+        <ToastContainer />
+      </Container>
     </>
   );
 };
 
 export default Leaderboard;
+const Container = styled.div`
+  .table-head {
+    background-color: #583b04;
+    color: white;
+  }
+`;

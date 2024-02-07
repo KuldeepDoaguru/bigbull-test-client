@@ -100,6 +100,31 @@ const CourseDetails = () => {
     getPurchasedCart();
   }, []);
 
+  const shareOnWhatsApp = () => {
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+      courseData[0]?.course_name +
+        " " +
+        `https://bigbulls.co.in/course-details/${courseid}`
+    )}`;
+    window.open(whatsappUrl, "_blank");
+  };
+
+  const shareOnFacebook = () => {
+    const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+      `https://bigbulls.co.in/course-details/${courseid}`
+    )}`;
+    window.open(facebookUrl, "_blank");
+  };
+
+  const shareOnTwitter = () => {
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+      courseData[0]?.course_name +
+        " " +
+        `https://bigbulls.co.in/course-details/${courseid}`
+    )}`;
+    window.open(twitterUrl, "_blank");
+  };
+
   return (
     <>
       <Container>
@@ -257,25 +282,71 @@ const CourseDetails = () => {
                     alt="Card cap"
                   />
                   <div class="card-body">
-                    <h5 class="card-title">
+                    {/* <h5 class="card-title">
                       Subscribe to Bigbull’s top courses
-                    </h5>
+                    </h5> */}
                     <p class="card-text">
                       Get this course, plus 500+ of our courses. For our
-                      Guidance <Link to="/contact">Contact us</Link>
+                      Guidance{" "}
+                      <Link to="/contact" style={{ textDecoration: "none" }}>
+                        Contact us
+                      </Link>
                     </p>
-                    <button className="btn btn-info w-100">
+                    {/* <button className="btn btn-info w-100">
                       Subscribe Now
-                    </button>
+                    </button> */}
                     <div className="mt-2">
-                      <button className="btn btn-outline-success">
+                      {/* <button className="btn btn-success">
+                        Share this Course
+                      </button> */}
+                      <button
+                        type="button"
+                        className="btn btn-success"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModal"
+                      >
                         Share this Course
                       </button>
-                      <button className="btn btn-outline-success ml-2">
+                      {/* <button className="btn btn-outline-success ml-2">
                         Gift this course
-                      </button>
+                      </button> */}
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <h2 className="text-center">Share this course with others</h2>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    className="btn btn-success mr-2"
+                    onClick={shareOnWhatsApp}
+                  >
+                    Share on WhatsApp
+                  </button>
+                  <button
+                    className="btn btn-primary mr-2"
+                    onClick={shareOnFacebook}
+                  >
+                    Share on Facebook
+                  </button>
+                  <button
+                    className="btn btn-info mr-2"
+                    onClick={shareOnTwitter}
+                  >
+                    Share on Twitter
+                  </button>
                 </div>
               </div>
             </div>
@@ -297,5 +368,9 @@ const Container = styled.div`
   .imgthumb {
     height: 12rem;
     width: 14rem;
+  }
+
+  .modal-footer {
+    flex-wrap: nowrap !important;
   }
 `;

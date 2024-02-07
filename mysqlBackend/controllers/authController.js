@@ -907,57 +907,51 @@ const profilePictureView = async (req, res) => {
   }
 };
 
-const contactRequest = (req, res) => {
-  const { email, name, message, number } = req.body;
+const contactRequest = async (req, res) => {
+  try {
+    const { email, name, message, number } = req.body;
 
-  if (!email || !name || !message || !number) {
-    return res
-      .status(400)
-      .json({ error: "Missing required fields in the request." });
-  }
-
-  // Configure Nodemailer transporter
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: process.env.EMAILSENDER,
-      pass: process.env.EMAILPASSWORD,
-    },
-  });
-
-  console.log("email", email);
-  const mailOptions = {
-    from: process.env.EMAILSENDER,
-    to: email,
-    subject: "Enquiry from website",
-    text: `Hello ${name},\n\nYou wrote: "${message}"\n\nYour contact number is: ${number}`,
-  };
-
-  // Send the email
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error(error);
-      res.status(500).send("An error occurred while sending the email.");
-    } else {
-      console.log("Email sent:", info.response);
-
-      // Save data to the database
-      const insertQuery = `INSERT INTO inquiry_mail (name, email, mobile, message) VALUES (?, ?, ?, ?)`;
-      const values = [name, email, number, message];
-
-      db.query(insertQuery, values, (dbError, result) => {
-        if (dbError) {
-          console.error("Error saving data to the database:", dbError);
-          res
-            .status(500)
-            .send("An error occurred while saving data to the database.");
-        } else {
-          console.log("Data saved to the database:", result);
-          res.status(200).send("Email sent and data saved successfully!");
-        }
-      });
+    if (!email || !name || !message || !number) {
+      return res
+        .status(400)
+        .json({ error: "Missing required fields in the request." });
     }
-  });
+
+    // Configure Nodemailer transporter
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAILSENDER,
+        pass: process.env.EMAILPASSWORD,
+      },
+    });
+
+    console.log("email", email);
+    const mailOptions = {
+      from: process.env.EMAILSENDER,
+      to: email,
+      subject: "Enquiry from website",
+      text: `Hello ${name},\n\nYou wrote: "${message}"\n\nYour contact number is: ${number}`,
+    };
+
+    // Send the email
+    const info = await transporter.sendMail(mailOptions);
+
+    console.log("Email sent:", info.response);
+
+    // Save data to the database
+    const insertQuery = `INSERT INTO inquiry_mail (name, email, mobile, message) VALUES (?, ?, ?, ?)`;
+    const values = [name, email, number, message];
+
+    const result = await db.query(insertQuery, values);
+
+    console.log("Data saved to the database:", result);
+
+    res.status(200).send("Email sent and data saved successfully!");
+  } catch (error) {
+    console.error("An error occurred:", error);
+    res.status(500).send("An error occurred while processing the request.");
+  }
 };
 
 const addUserBio = (req, res) => {
@@ -1017,6 +1011,39 @@ const updateUserBio = (req, res) => {
   }
 };
 
+const deleteUser = (req, res) => {
+  const id = req.params.id;
+  try {
+    const deleteQuery = `DELETE FROM register WHERE id = ?`;
+    db.query(deleteQuery, id, (err, result) => {
+      if (err) {
+        res.status(500).send("invalid user ID");
+      }
+      res.status(500).send("User Deleted Successfully");
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("An error occurred while deleting");
+  }
+};
+
+const getUserDeleteReason = (req, res) => {
+  const id = req.params.id;
+  const text = req.body.text;
+  try {
+    const insertQuery = `INSERT INTO account_delete_reason (user_id, reason) VALUES (?,?)`;
+    db.query(insertQuery, [id, text], (err, result) => {
+      if (err) {
+        res.status(500).json({ error: "Invalid ID" });
+      } else {
+        res.status(200).json({ message: "Reason Submitted successfully" });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   registerController,
   loginController,
@@ -1034,4 +1061,6 @@ module.exports = {
   contactRequest,
   addUserBio,
   updateUserBio,
+  deleteUser,
+  getUserDeleteReason,
 };

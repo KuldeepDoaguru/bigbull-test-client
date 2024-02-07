@@ -77,7 +77,7 @@ const CartPage = () => {
   }, []);
 
   const coursesInCart = allCourses.filter((course) =>
-    cartItem.some((cartItem) => cartItem.item_id === course.course_id)
+    cartItem?.some((cartItem) => cartItem.item_id === course.course_id)
   );
 
   console.log(coursesInCart);

@@ -13,6 +13,8 @@ const {
   contactRequest,
   addUserBio,
   updateUserBio,
+  deleteUser,
+  getUserDeleteReason,
 } = require("../controllers/authController.js");
 const {
   addCourseVideos,
@@ -156,4 +158,6 @@ router.post(
 router.post("/CoursePayment", CoursePayment);
 router.post("/addUserBio/:id", addUserBio);
 router.put("/updateUserBio/:id", updateUserBio);
+router.delete("/deleteUser/:id", deleteUser);
+router.post("/getUserDeleteReason/:id", getUserDeleteReason);
 module.exports = router;

@@ -62,13 +62,19 @@ const Addcourse = () => {
             />
             <input
               onChange={(e) => {
-                setcourseprice(e.target.value);
+                const price = parseInt(e.target.value);
+                if (price !== 0) {
+                  setcourseprice(price);
+                } else {
+                  alert("Course price cannot be 0");
+                }
               }}
               placeholder="Enter Course Price in Rupees"
               type="number"
               name="price"
               value={course_price}
             />
+
             {/* <input onChange={(e) => { setcourseoffer(e.target.value) }} placeholder='Enter Offer Price in Rupees' type='number' /> */}
 
             <input

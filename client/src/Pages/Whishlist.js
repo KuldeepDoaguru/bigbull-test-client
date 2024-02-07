@@ -49,7 +49,7 @@ const Whishlist = () => {
   }, []);
 
   const coursesInWishlist = allCourses.filter((course) =>
-    wishlistItem.some((cartItem) => cartItem.item_id === course.course_id)
+    wishlistItem?.some((cartItem) => cartItem.item_id === course.course_id)
   );
 
   console.log(coursesInWishlist);
@@ -105,6 +105,7 @@ const Whishlist = () => {
                             src={`https://bigbulls.co.in/${item.thumbnails}`}
                             className="card-img-top"
                             alt="Course Thumbnail"
+                            loading="lazy"
                           />
                         )}
 

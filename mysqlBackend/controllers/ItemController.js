@@ -14,6 +14,10 @@ const addToCart = async (req, res) => {
   try {
     const { userId, itemId } = req.body;
 
+    if (userId === null || itemId === null) {
+      return res.status(500).send("user ID and Item ID are required");
+    }
+
     // Check if the item is already in the cart
     db.query(
       "SELECT * FROM carts WHERE user_id = ? AND item_id = ?",
@@ -328,6 +332,10 @@ const videoListViaCourseId = async (req, res) => {
 const addToWishlist = async (req, res) => {
   try {
     const { userId, productId } = req.params;
+
+    if (userId === null || itemId === null) {
+      return res.status(500).send("user ID and Item ID are required");
+    }
 
     const getQuery = `SELECT * FROM wishlists WHERE user_id = ? AND item_id = ?`;
     db.query(getQuery, [userId, productId], (err, result) => {

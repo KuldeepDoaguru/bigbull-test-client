@@ -9,11 +9,12 @@
 
 .searchbar {
   display: flex;
-  width: 400px;
+  width: auto;
   margin: 20px;
   box-shadow: 0px 0px 10px gray;
   padding: 10px;
   border-radius: 10px;
+  align-items: center;
 }
 
 .searchbar input {
@@ -25,5 +26,5 @@
 
 .searchbar svg {
   width: 20px;
-  color: orange;
+  color: #583b04;
 }

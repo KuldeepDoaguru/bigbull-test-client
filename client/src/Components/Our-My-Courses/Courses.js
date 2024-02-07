@@ -13,8 +13,18 @@ import { BsSuitHeartFill, BsSuitHeart, BsCart3, BsBell } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import cogoToast from "cogo-toast";
+import { css } from "@emotion/react";
+import { RingLoader } from "react-spinners";
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  height: 100vh;
+`;
 
 const Courses = () => {
+  const [loading, setLoading] = useState(true);
   const [allCourses, setallCourses] = useState([]);
   const [keyword, setKeyword] = useState("");
   const [showAllCourses, setShowAllCourses] = useState(true);
@@ -26,6 +36,8 @@ const Courses = () => {
   const [cartItem, setCartItem] = useState({});
   console.log(`User Name: ${user.name}, User ID: ${user.id}`);
   console.log("User State:", user);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(2);
 
   const responseCourse = async () => {
     try {
@@ -39,30 +51,9 @@ const Courses = () => {
     }
   };
 
-  // const responseImage = async (id) => {
-  //   console.log(id);
-  //   try {
-  //     const res = await axios.get(
-  //       `https://bigbulls.co.in/api/v1/auth/thumbnail/${id}`
-  //     );
-  //     console.log(res.data);
-  //     setImages(res.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   useEffect(() => {
     responseCourse();
-  }, []); // Fetch course information only once when the component mounts
-
-  // useEffect(() => {
-  //   if (allCourses.length > 0) {
-  //     allCourses.forEach((course) => {
-  //       responseImage(course._id);
-  //     });
-  //   }
-  // }, [allCourses]);
+  }, []);
 
   const handleSearch = () => {
     console.log(keyword);
@@ -140,10 +131,30 @@ const Courses = () => {
       console.log(response);
       cogoToast.success("Course addded to the cart");
     } catch (error) {
-      console.log(error);
-      cogoToast.error("course already in the cart");
+      console.log(error.response.data);
+      cogoToast.error(error.response.data);
     }
   };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = allCourses.slice(indexOfFirstItem, indexOfLastItem);
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="sweet-loading d-flex justify-content-center align-items-center mt-5 mb-5">
+        <RingLoader color={"#123abc"} css={override} size={150} />
+      </div>
+    );
+  }
   return (
     <>
       <Container>
@@ -160,57 +171,63 @@ const Courses = () => {
               onChange={(e) => setKeyword(e.target.value.toLowerCase())}
               type="text"
             />
-            <button onClick={handleSearch}>Search</button>
+            {/* <button onClick={handleSearch}>Search</button> */}
           </div>
 
           {allCourses ? (
             <div className="container ms-3 me-3 my-5 mb-5">
-              <div>
-                <h3 className="my-3">We have 230 videos total</h3>
-              </div>
               <div className="container">
-                <div className="row g-3">
-                  {allCourses?.map((item, index) => (
-                    <div
-                      className="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12"
-                      key={index}
-                    >
-                      <div className="card course-card border rounded">
-                        <div className="relative">
-                          <img
-                            src={item.thumbnails}
-                            className="card-img-top"
-                            alt="Course Thumbnail"
-                          />
+                <ul>
+                  {currentItems
+                    ?.filter((val) => {
+                      if (keyword === "") {
+                        return true;
+                      } else if (
+                        val.course_name.toLowerCase().includes(keyword) ||
+                        val.course_name.toLowerCase().includes(keyword)
+                      ) {
+                        return val;
+                      }
+                    })
+                    .map((item, index) => (
+                      <li key={index}>
+                        <div className="card course-card border rounded">
+                          <div className="relative">
+                            <img
+                              src={item.thumbnails}
+                              className="card-img-top"
+                              alt="Course Thumbnail"
+                            />
 
-                          <div
-                            className="absolute"
-                            style={{ top: "10px", right: "30px" }}
-                          >
-                            <div className="absolute">
-                              {Array.isArray(wishlistItem) &&
-                              wishlistItem.some(
-                                (wishlistItem) =>
-                                  wishlistItem.item_id === item.course_id
-                              ) ? (
-                                <BsSuitHeartFill className="icons-added" />
-                              ) : (
-                                <BsSuitHeartFill
-                                  onClick={() => addWishlist(item.course_id)}
-                                  className="icons"
-                                />
-                              )}
+                            <div
+                              className="absolute"
+                              style={{ top: "10px", right: "30px" }}
+                            >
+                              <div className="absolute">
+                                {Array.isArray(wishlistItem) &&
+                                wishlistItem.some(
+                                  (wishlistItem) =>
+                                    wishlistItem.item_id === item.course_id
+                                ) ? (
+                                  <BsSuitHeartFill className="icons-added" />
+                                ) : (
+                                  <BsSuitHeartFill
+                                    onClick={() => addWishlist(item.course_id)}
+                                    className="icons"
+                                  />
+                                )}
+                              </div>
                             </div>
                           </div>
                           <div className="card-body">
-                            <h5 className="card-title text-center">
+                            <h5 className="card-title text-start">
                               <Link to={`/course-details/${item.course_id}`}>
                                 {item.course_name}
                               </Link>
                             </h5>
-                            <p className="text-center">{item.category}</p>
-                            <div className="d-flex justify-center">
-                              <h5 className="text-center  ">4.9</h5>
+                            <p className="text-start">{item.category}</p>
+                            <div className="d-flex justify-content-start">
+                              <h5 className="text-start">4.9</h5>
                               <ul className="list-unstyled d-flex justify-content-center text-warning mb-1">
                                 <li>
                                   <i className="fas fa-star fa-sm"></i>
@@ -229,10 +246,10 @@ const Courses = () => {
                                 </li>
                               </ul>
                             </div>
-                            <h5 className="text-center">
+                            <h5 className="text-start">
                               Price - ₹{item.price}
                             </h5>
-                            <div className="d-flex justify-content-center">
+                            <div className="d-flex justify-content-start">
                               <button
                                 className="btn btn-primary mt-1"
                                 onClick={() => addCartTo(item.course_id)}
@@ -242,10 +259,31 @@ const Courses = () => {
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+              <div>
+                <ul className="pagination">
+                  {Array.from(
+                    { length: Math.ceil(allCourses.length / itemsPerPage) },
+                    (_, i) => (
+                      <li
+                        key={i}
+                        className={`page-item ${
+                          currentPage === i + 1 ? "active" : ""
+                        }`}
+                      >
+                        <button
+                          onClick={() => paginate(i + 1)}
+                          className="page-link"
+                        >
+                          {i + 1}
+                        </button>
+                      </li>
+                    )
+                  )}
+                </ul>
               </div>
             </div>
           ) : (
@@ -341,9 +379,11 @@ const Container = styled.div`
   }
 
   .course-card {
-    height: 25rem !important;
+    height: auto;
     width: 100%;
-    border-radius: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: row;
     img {
       height: 13rem;
     }
@@ -365,13 +405,45 @@ const Container = styled.div`
     color: red;
   }
 
-  /* .relative {
-    position: relative;
+  .card-body {
+    padding-left: 7rem;
+    @media (max-width: 500px) {
+      padding-left: 0rem;
+    }
   }
 
-  .absolute {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  } */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    list-style: none;
+    padding: 0;
+    .page-item {
+      margin: 0 5px;
+      button {
+        cursor: pointer;
+        color: #007bff;
+        background-color: transparent;
+        border: 1px solid #dee2e6;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+        &:hover {
+          background-color: #f8f9fa;
+        }
+      }
+      &.active button {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: white;
+      }
+    }
+  }
+
+  .card-title {
+    a {
+      text-decoration: none;
+      color: #583b04;
+    }
+  }
 `;

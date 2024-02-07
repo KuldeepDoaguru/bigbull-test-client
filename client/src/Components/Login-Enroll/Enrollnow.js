@@ -372,7 +372,7 @@ const Enrollnow = () => {
                           />
                         </div>
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
-                          <label for="refferelCode">Add Referrel Code</label>
+                          <label for="refferelCode">Add Referral Code </label>
                           <input
                             name="refferelCode"
                             value={data.refferelCode}

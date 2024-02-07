@@ -92,7 +92,10 @@ const Login = () => {
               <Link to="/forgotpassword" className="fp">
                 Forgot password?
               </Link>
-              <input type="submit" />
+              {/* <input type="submit" placeholder="Login" /> */}
+              <button type="submit" className="btn btn-info">
+                Login
+              </button>
               <hr className="light-grey-hr" />
               <p>
                 Don't have an account? <Link to="/enrollnow">Enroll now</Link>

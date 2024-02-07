@@ -134,10 +134,10 @@ const Navigationbar = () => {
                         {/* <RxAvatar className="icons" /> */}
                         <ul class="list rounded">
                           <li>
-                            <div className="d-flex justify-content-around ">
-                              <div>
+                            <div className="d-flex">
+                              {/* <div>
                                 <RxAvatar className="icons-user" />
-                              </div>
+                              </div> */}
                               <div className="ml-1">
                                 <p
                                   className="fw-bold m-0 fs-5"
@@ -145,9 +145,9 @@ const Navigationbar = () => {
                                 >
                                   {user.name}
                                 </p>
-                                <p className="m-0" style={{ color: "#7f8fa6" }}>
+                                {/* <p className="m-0" style={{ color: "#7f8fa6" }}>
                                   {user.name}
-                                </p>
+                                </p> */}
                               </div>
                             </div>
                           </li>
@@ -212,17 +212,17 @@ const Container = styled.div`
     }
   }
   nav {
-    background: #269edf;
+    background: #105d87;
   }
   .nav-link {
-    color: #f8c291;
+    color: #ffffff;
     font-weight: bold;
     // background: #000;
     // margin-left: 1rem;
     // border-radius: 5px;
   }
   .navLk {
-    color: #f8c291;
+    color: #ffffff;
     font-weight: bold;
   }
   .active {

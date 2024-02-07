@@ -60,8 +60,8 @@ const Managecourses = () => {
   return (
     <>
       <Container>
-        <div className="recentpurchases-outer">
-          <Navbar />
+        <Navbar />
+        <div className="container">
           <div className="head-main">Manage Courses</div>
           <div className="searchbar">
             <svg
@@ -111,14 +111,24 @@ const Managecourses = () => {
               </div>
             )}
           </div>
-          <div className="table">
+          {/* <div className="table">
             <div className="table-head">
-              <p className="table-sno">Course Name</p>
-              <p className="table-small">Course Category</p>
-              <p className="table-email">Courses Price</p>
-              <p className="table-btn">Delete</p>
+              <th className="table-small" style={{ width: "25%" }}>
+                Course Name
+              </th>
+              <th className="table-small" style={{ width: "15%" }}>
+                Course Category
+              </th>
+              <th className="table-email" style={{ width: "15%" }}>
+                Courses Price
+              </th>
+              <th className="table-btn" style={{ width: "10%" }}>
+                Delete
+              </th>
 
-              <p className="table-btn">Edit</p>
+              <th className="table-btn" style={{ width: "10%" }}>
+                Edit
+              </th>
             </div>
             <div className="table-body">
               {allCourses
@@ -135,33 +145,116 @@ const Managecourses = () => {
                 .map((item, index) => (
                   <>
                     <div className="table-row" key={index}>
-                      <p className="table-small">
-                        <Link to={`/course-details/${item.course_id}`}>
+                      <td className="table-small" style={{ width: "25%" }}>
+                        <a
+                          href={`https://bigbulls.co.in/course-details/${item.course_id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           <span>
                             <FaExternalLinkAlt />
                           </span>
                           {item.course_name}
-                        </Link>
-                      </p>
-                      <p className="table-small">{item.category}</p>
-                      <p className="table-email">{item.price}</p>
-                      <p
+                        </a>
+                      </td>
+                      <td className="table-small" style={{ width: "15%" }}>
+                        {item.category}
+                      </td>
+                      <td className="table-email" style={{ width: "15%" }}>
+                        {item.price}
+                      </td>
+                      <td
                         className="table-btn"
                         style={{ color: "black" }}
                         onClick={() => deleteCourse(item.course_id)}
                       >
                         Delete
-                      </p>
+                      </td>
                       <Link
                         to={`/editcourse/${item.course_id}`}
-                        style={{ textDecoration: "none" }}
+                        style={{ textDecoration: "none", width: "10%" }}
                       >
-                        <p className="table-btn">Edit</p>
+                        <td className="table-btn">Edit</td>
                       </Link>
                     </div>
                   </>
                 ))}
             </div>
+          </div> */}
+
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead className="table-head">
+                <tr>
+                  <th className="table-small" style={{ width: "25%" }}>
+                    Course Name
+                  </th>
+                  <th className="table-small" style={{ width: "15%" }}>
+                    Course Category
+                  </th>
+                  <th className="table-email" style={{ width: "15%" }}>
+                    Courses Price
+                  </th>
+                  <th style={{ width: "10%" }}>Delete</th>
+
+                  <th style={{ width: "10%" }}>Edit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {allCourses
+                  .filter((val) => {
+                    if (keyword === "") {
+                      return true;
+                    } else if (
+                      val.name.toLowerCase().includes(keyword) ||
+                      val.name.toLowerCase().includes(keyword)
+                    ) {
+                      return val;
+                    }
+                  })
+                  .map((item, i) => {
+                    return (
+                      <tr className="table-row" key={item.id}>
+                        <td className="table-small" style={{ width: "25%" }}>
+                          <a
+                            href={`https://bigbulls.co.in/course-details/${item.course_id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <span>
+                              <FaExternalLinkAlt />
+                            </span>
+                            {item.course_name}
+                          </a>
+                        </td>
+                        <td className="table-small" style={{ width: "15%" }}>
+                          {item.category}
+                        </td>
+                        <td className="table-email" style={{ width: "15%" }}>
+                          {item.price}
+                        </td>
+                        <td>
+                          <button
+                            className="btn btn-danger"
+                            onClick={() => deleteCourse(item.course_id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+
+                        <td>
+                          <Link
+                            to={`/editcourse/${item.course_id}`}
+                            style={{ textDecoration: "none", width: "10%" }}
+                          >
+                            <button className="btn btn-info">Edit</button>
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
           </div>
         </div>
         <ToastContainer />
@@ -191,5 +284,10 @@ const Container = styled.div`
     &:hover {
       background-color: #dff9fb;
     }
+  }
+
+  .table-head {
+    background-color: #583b04;
+    color: white;
   }
 `;

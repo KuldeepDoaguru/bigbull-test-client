@@ -20,9 +20,19 @@ import Productslider1 from "../product-slider/Productslider1";
 import Productslider from "../product-slider/Productslider";
 import Homeblogs from "./Homeblogs";
 import styled from "styled-components";
+import { css } from "@emotion/react";
+import { RingLoader } from "react-spinners";
+
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+  height: 100vh;
+`;
 
 const Home = () => {
   const [carousel, setcarousel] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     axios
@@ -40,6 +50,20 @@ const Home = () => {
         });
       });
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="sweet-loading d-flex justify-content-center align-items-center mt-5 mb-5">
+        <RingLoader color={"#123abc"} css={override} size={150} />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -83,7 +107,7 @@ const Home = () => {
           <Homepagecoursecardcontainer />
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 200">
             <path
-              fill="#eb4d4b"
+              fill="#85110F"
               fillOpacity="1"
               d="M0,64L120,80C240,96,480,128,720,133.3C960,139,1200,117,1320,106.7L1440,96L1440,200L1320,200C1200,200,960,200,720,200C480,200,240,200,120,200L0,200Z"
             ></path>
@@ -123,7 +147,7 @@ const Home = () => {
           </div>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 160">
             <path
-              fill="#eb4d4b"
+              fill="#85110F"
               fillOpacity="1"
               d="M0,192L120,176C240,160,480,128,720,122.7C960,117,1200,139,1320,149.3L1440,160L1440,0L1320,0C1200,0,960,0,720,0C480,0,240,0,120,0L0,0Z"
             ></path>
@@ -429,7 +453,7 @@ const Container = styled.div`
     margin-top: 22px;
     margin-bottom: 4px;
     padding: 0;
-    color: orange;
+    color: #583b04;
   }
 
   .timeline .timeline-heading h4.subheading {

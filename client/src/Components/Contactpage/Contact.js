@@ -21,7 +21,7 @@ const Contact = () => {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhoat:8080/api/v1/auth/contactInquiry", {
+      await axios.post("https://bigbulls.co.in/api/v1/auth/contactInquiry", {
         name: fullname,
         email,
         message,

@@ -3,6 +3,7 @@ import Styled from "styled-components";
 import backgroundImg from "../../image/bgwebp.webp";
 import aboutbanner from "../../image/About_bbtone.webp";
 import { GiSkills } from "react-icons/gi";
+import { Link } from "react-router-dom";
 function Aboutus() {
   return (
     <>
@@ -24,30 +25,30 @@ function Aboutus() {
                 financial goals.
               </p>
 
-              <p className="row mt-5">
-                <span className="col-sm-2 iconkey">
+              <p className="d-flex flex-row align-items-center mt-5">
+                <span className=" iconkey">
                   <img
                     src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1700389872/bigbull/skills_1_bx45nn.png"
-                    width={"50px"}
+                    width={"100px"}
                     alt="key"
                   />
                 </span>
-                <span className="col-sm-10 content">
+                <span className="mx-4 content">
                   <strong>
                     Expert-led courses and workshops for all skill levels.
                   </strong>
                 </span>
               </p>
 
-              <p className="row my-3">
-                <span className="col-sm-2 iconkey">
+              <p className="d-flex flex-row align-items-center">
+                <span className=" iconkey">
                   <img
                     src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1700390714/bigbull/tools_kkdnuj.png"
-                    width={"50px"}
+                    width={"100px"}
                     alt="key"
                   />
                 </span>
-                <span className="col-sm-10 content">
+                <span className="mx-4 content">
                   <strong>
                     Interactive tools for practical application of financial
                     strategies
@@ -55,25 +56,26 @@ function Aboutus() {
                 </span>
               </p>
 
-              <p className="row my-3">
-                <span className="col-sm-2 iconkey">
+              <p className="d-flex flex-row align-items-center">
+                <span className=" iconkey">
                   <img
                     src="https://res.cloudinary.com/dq5upuxm8/image/upload/v1700390980/bigbull/consult_zoskcl.png"
-                    width={"50px"}
+                    width={"100px"}
                     alt="icon"
                   />
                 </span>
-                <span className="col-sm-10 content">
+                <span className="mx-4 content">
                   <strong>
                     Personalized consultations to address your unique financial
                     needs
                   </strong>
                 </span>
               </p>
-
-              <button className="btn btn-primary btn-lg my-5">
-                Contact us
-              </button>
+              <Link to="/contact">
+                <button className="btn btn-primary btn-lg my-5">
+                  Contact us
+                </button>
+              </Link>
             </div>
             <div className="col-sm-6 ">
               <img
@@ -481,7 +483,7 @@ background: url("https://res.cloudinary.com/dq5upuxm8/image/upload/v1696838093/b
 }
 
 .stuh{
-  color: orange;
+  color: #583B04;
   text-shadow: 1px 1px 5px black;
 }
 

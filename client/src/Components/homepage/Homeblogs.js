@@ -57,7 +57,7 @@ const Container = Styled.div`
 #lb{
     font-size:50px;
     font-weight:700;
-    color:orange;
+    color:#583B04;
 }
 a{
     text-decoration:none;

@@ -48,7 +48,7 @@ const EditProfile = () => {
                       srcset=""
                     />
                     <h3 className="mt-2">{user.name}</h3>
-                    <div>
+                    <div className="navLinked">
                       <Nav
                         className="flex-column side-cont"
                         activeKey={selectedTab}
@@ -69,11 +69,11 @@ const EditProfile = () => {
                             Edit Profile
                           </Nav.Link>
                         </Nav.Item>
-                        <Nav.Item>
+                        {/* <Nav.Item>
                           <Nav.Link eventKey="tab3" className="navlink">
                             Change Profile Photo
                           </Nav.Link>
-                        </Nav.Item>
+                        </Nav.Item> */}
 
                         <Nav.Item>
                           <Nav.Link eventKey="tab5" className="navlink">
@@ -113,7 +113,7 @@ export default EditProfile;
 const Container = styled.div`
   .leftdiv {
     border-right: 1px solid #e0e0e0;
-    height: 100vh;
+    height: 100%;
     margin: 0;
     display: flex;
     justify-content: center;
@@ -142,5 +142,11 @@ const Container = styled.div`
 
   .active {
     background-color: #f53237;
+  }
+
+  .navLinked {
+    .nav-link {
+      padding: 0.5rem 0rem;
+    }
   }
 `;

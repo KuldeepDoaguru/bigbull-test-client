@@ -888,7 +888,7 @@ export default Productslider1;
 
 const Container = Styled.div`
   #exc{
-    color:orange;
+    color:#583B04;
     font-size:50px;
     font-weight:700;
   }

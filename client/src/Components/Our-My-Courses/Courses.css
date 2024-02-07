@@ -1,66 +1,64 @@
 .coursepage .title {
-    text-align: center;
-    font-size: 60px;
-    padding: 20px;
-    color: orange;
+  text-align: center;
+  font-size: 60px;
+  padding: 20px;
+  color: #583b04;
 }
 
 .coursepage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .course-searchbar {
-    width: 500px;
-    background-color: white;
-    border: 2px solid orange;
-    border-radius: 20px;
-    padding: 5px 10px;
-    display: flex;
-    align-items: center;
+  width: 500px;
+  background-color: white;
+  border: 2px solid #583b04;
+  border-radius: 20px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
 }
 
 .course-searchbar input {
-    outline: none;
-    border: none;
-    padding-left: 10px;
-    width: 100%;
+  outline: none;
+  border: none;
+  padding-left: 10px;
+  width: 100%;
 }
 
 .courses_array {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    /* width: 1200px; */
-    margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  /* width: 1200px; */
+  margin-top: 50px;
 }
 .card-image {
-    height: 140px; 
-    object-fit: cover; 
+  height: 140px;
+  object-fit: cover;
 }
-.start{
-    width:90px;
+.start {
+  width: 90px;
 }
-.card-body{
-    margin-top: -10px;
+.card-body {
+  margin-top: -10px;
 }
- .rate{
-    color: blueviolet;
-    font-weight: 600;
-    font-size:x-small;
- }   
-
+.rate {
+  color: blueviolet;
+  font-weight: 600;
+  font-size: x-small;
+}
 
 @media (max-width: 750px) {
-    .course-searchbar {
-        width: 95%;
+  .course-searchbar {
+    width: 95%;
+  }
 
-    }
-
-    .coursepage .title {
-        font-size: 40px;
-    }
+  .coursepage .title {
+    font-size: 40px;
+  }
 }

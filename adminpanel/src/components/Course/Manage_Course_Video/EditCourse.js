@@ -187,11 +187,52 @@ const EditCourse = () => {
               <button type="submit" className="btn btn-success">
                 Submit
               </button>
-              <button className="btn btn-danger" onClick={deleteCourse}>
+              {/* <button className="btn btn-danger" onClick={deleteCourse}>
                 Delete this Course
+              </button> */}
+              <button
+                type="button"
+                className="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+              >
+                Delete
               </button>
             </div>
           </form>
+        </div>
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body">
+                <h2 className="text-center">
+                  Do you really want to delete course ?
+                </h2>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-warning"
+                  data-bs-dismiss="modal"
+                >
+                  Back
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  onClick={deleteCourse}
+                >
+                  Delete Account
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <ToastContainer />
